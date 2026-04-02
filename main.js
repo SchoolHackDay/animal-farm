@@ -408,7 +408,7 @@ const Game = {
     // Handoff dla trybu lokalnego z wieloma prawdziwymi graczami
     const hasRealPlayers = gs.players.filter(p => !p.isAI).length > 1;
     if (gs.mode === 'local' && hasRealPlayers && !next.isAI) {
-      UI.showHandoff(next);
+      // brak ekranu przekazania – gra płynnie przechodzi do kolejnego gracza
     } else if (next.isAI) {
       aiTimer = setTimeout(() => Game.aiTurn(next), 900);
     }
@@ -734,11 +734,8 @@ const UI = {
     UI.renderGame();
 
     const first = gs.players[0];
-    const hasMultiReal = players.filter(p => !p.isAI).length > 1;
     if (first.isAI) {
       aiTimer = setTimeout(() => Game.aiTurn(first), 1000);
-    } else if (hasMultiReal) {
-      UI.showHandoff(first);
     }
   },
 
@@ -813,21 +810,6 @@ const UI = {
 
   closeSupabaseConfig() {
     qs('#modal-supabase').classList.add('hidden');
-  },
-
-  // ---------- HANDOFF ----------
-
-  showHandoff(player) {
-    const overlay = qs('#handoff-overlay');
-    qs('#handoff-emoji').textContent = EMOJI.rabbit;
-    qs('#handoff-title').textContent = 'Czas na turę:';
-    qs('#handoff-name').textContent  = player.name;
-    qs('#handoff-name').style.color  = player.color;
-    overlay.classList.remove('hidden');
-  },
-
-  dismissHandoff() {
-    qs('#handoff-overlay').classList.add('hidden');
   },
 
   // ---------- RENDEROWANIE GRY ----------
