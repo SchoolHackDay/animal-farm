@@ -355,9 +355,7 @@ const Game = {
     const logLine = `${player.name} ${EMOJI[pink]||pink}+${EMOJI[yellow]||yellow}${eventPart} ${breedPart}`;
     addLog(logLine.trim(), hasBad ? 'bad' : breedPart !== '—' ? 'good' : 'normal');
 
-    // Rozmnażanie
-    const gained = calcBreeding(player.inventory, pink, yellow);
-        // Sprawdź wygraną
+    // Sprawdź wygraną
     if (hasWon(player)) {
       gs.phase  = 'end';
       gs.winner = player;
