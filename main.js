@@ -230,6 +230,17 @@ function validateTrade(giving, receiving, playerInv) {
     }
   }
 
+  // Psy: max 1 sztuka
+  const DOG_MAX = { smallDog: 1, bigDog: 1 };
+  for (const [a, limit] of Object.entries(DOG_MAX)) {
+    const already  = playerInv[a] || 0;
+    const getting  = receiving[a] || 0;
+    const giving_  = giving[a]   || 0;
+    if (already - giving_ + getting > limit) {
+      return { ok: false, msg: `Można mieć tylko 1 ${NAMES[a]}!` };
+    }
+  }
+
   const gv = calcValue(giving);
   const rv = calcValue(receiving);
   if (gv !== rv) {
@@ -904,7 +915,6 @@ const UI = {
           ${isWinner ? '<span class="player-tag">🏆 WYGRAŁ!</span>' : ''}
         </div>
         <div class="inventory-grid">${invHtml}</div>
-        <div class="win-progress">${winHtml}</div>
       </div>`;
     }).join('');
   },
