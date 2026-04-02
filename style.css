@@ -304,27 +304,53 @@ select { appearance: auto; cursor: pointer; }
   padding: .5rem;
 }
 .die {
-  width: 72px; height: 72px;
+  width: 80px; height: 80px;
   background: var(--card);
-  border-radius: 14px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
+  font-size: 2.6rem;
   border: 2px solid var(--border);
-  transition: all .15s;
+  transition: box-shadow .1s;
   user-select: none;
 }
-.pink-die  { border-color: #e87aad; }
-.yellow-die{ border-color: #e8c32a; }
-.die.rolling { animation: dieRoll .5s ease-in-out; }
+.pink-die   { border-color: #e87aad; }
+.yellow-die { border-color: #e8c32a; }
 
-@keyframes dieRoll {
-  0%   { transform: scale(1.1) rotate(-10deg); }
-  30%  { transform: scale(.9)  rotate(12deg); }
-  60%  { transform: scale(1.05) rotate(-5deg); }
-  100% { transform: scale(1)   rotate(0deg); }
+/* Animacja rzutu – szybki jitter, powtarzana w JS */
+@keyframes dieShake {
+  0%   { transform: translate(-3px, -2px) rotate(-8deg)  scale(1.08); }
+  15%  { transform: translate( 3px,  2px) rotate( 9deg)  scale(.95); }
+  30%  { transform: translate(-2px,  3px) rotate(-6deg)  scale(1.05); }
+  45%  { transform: translate( 2px, -2px) rotate( 7deg)  scale(.97); }
+  60%  { transform: translate(-3px,  1px) rotate(-5deg)  scale(1.04); }
+  75%  { transform: translate( 2px,  2px) rotate( 4deg)  scale(.98); }
+  100% { transform: translate( 0,    0)   rotate( 0deg)  scale(1); }
 }
+
+/* Animacja lądowania – bounce */
+@keyframes dieLand {
+  0%   { transform: scale(1.4) rotate(-5deg); filter: blur(1px); }
+  40%  { transform: scale(.88) rotate(2deg);  filter: none; }
+  65%  { transform: scale(1.10) rotate(-1deg); }
+  82%  { transform: scale(.97); }
+  100% { transform: scale(1); }
+}
+
+.die.rolling {
+  animation: dieShake .12s linear infinite;
+  box-shadow: 0 0 16px 4px rgba(255, 255, 255, .18), 0 0 32px 6px rgba(255, 200, 80, .12);
+  filter: blur(.4px);
+}
+.pink-die.rolling   { box-shadow: 0 0 18px 5px rgba(232, 122, 173, .5); }
+.yellow-die.rolling { box-shadow: 0 0 18px 5px rgba(232, 195,  42, .5); }
+
+.die.landed {
+  animation: dieLand .45s cubic-bezier(.22,.61,.36,1) forwards;
+}
+.pink-die.landed   { box-shadow: 0 0 22px 6px rgba(232, 122, 173, .7); }
+.yellow-die.landed { box-shadow: 0 0 22px 6px rgba(232, 195,  42, .7); }
 
 .dice-labels {
   display: flex;

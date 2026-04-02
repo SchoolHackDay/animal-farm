@@ -264,6 +264,72 @@ function doTrade(giving, receiving, player) {
 }
 
 // ================================================================
+// ANIMACJA KOSTEK
+// ================================================================
+
+// Wszystkie możliwe twarze obu kostek (do animacji)
+const ALL_DICE_FACES = [...new Set([...PINK_DICE, ...YELLOW_DICE])];
+
+/**
+ * Animuje obie kostki jak slot-maszyna: szybkie losowe emoji → zwalnia → wynik.
+ * @param {string} finalPink   – wylosowany wynik różowej kostki
+ * @param {string} finalYellow – wylosowany wynik żółtej kostki
+ * @param {Function} onDone    – callback po zakończeniu animacji
+ */
+function animateDice(finalPink, finalYellow, onDone) {
+  const elPink   = qs('#die-pink');
+  const elYellow = qs('#die-yellow');
+
+  // Ukryj etykiety na czas animacji
+  qs('#dice-labels').classList.add('hidden');
+
+  // Uruchom klasę jitter (infinite shake via CSS)
+  elPink.classList.add('rolling');
+  elYellow.classList.add('rolling');
+
+  // Harmonogram klatek – zwalniamy pod koniec
+  const schedule = [
+    55, 60, 65, 70, 75,   // szybko
+    90, 100, 115,          // średnio
+    140, 165, 195,         // wolniej
+    230, 270, 310          // powoli
+  ];
+
+  let frame = 0;
+
+  function nextFrame() {
+    if (frame >= schedule.length) {
+      // --- Zatrzymanie: pokaż wynik ---
+      elPink.classList.remove('rolling');
+      elYellow.classList.remove('rolling');
+
+      elPink.textContent   = EMOJI[finalPink]   || finalPink;
+      elYellow.textContent = EMOJI[finalYellow]  || finalYellow;
+
+      // Animacja "lądowania"
+      elPink.classList.add('landed');
+      elYellow.classList.add('landed');
+
+      setTimeout(() => {
+        elPink.classList.remove('landed');
+        elYellow.classList.remove('landed');
+        onDone();
+      }, 480);
+      return;
+    }
+
+    // Losuj różne emoji dla obu kostek
+    elPink.textContent   = EMOJI[ALL_DICE_FACES[rand(ALL_DICE_FACES.length)]];
+    elYellow.textContent = EMOJI[ALL_DICE_FACES[rand(ALL_DICE_FACES.length)]];
+
+    frame++;
+    setTimeout(nextFrame, schedule[frame - 1]);
+  }
+
+  nextFrame();
+}
+
+// ================================================================
 // LOGIKA TURY
 // ================================================================
 
@@ -274,13 +340,32 @@ const Game = {
     if (!gs || gs.phase !== 'trade') return;
     if (gs.mode === 'network' && gs.players[gs.currentIdx].id !== myPlayerId) return;
 
-    const player = gs.players[gs.currentIdx];
+    // Wylosuj wynik z góry
     const pink   = rollDie(PINK_DICE);
     const yellow = rollDie(YELLOW_DICE);
+
+    // Zablokuj przyciski na czas animacji
+    qs('#btn-roll').disabled  = true;
+    qs('#btn-trade').disabled = true;
+
+    // Uruchom animację – po jej zakończeniu przetwórz turę
+    animateDice(pink, yellow, () => {
+      Game._processRoll(pink, yellow);
+    });
+  },
+
+  /** Przetwarza wyniki rzutu (po animacji) */
+  _processRoll(pink, yellow) {
+    const player = gs.players[gs.currentIdx];
     gs.lastDice  = { pink, yellow };
     gs.phase     = 'rolled';
 
     addLog(`🎲 ${player.name}: ${EMOJI[pink]||pink} + ${EMOJI[yellow]||yellow}`, 'turn');
+
+    // Pokaż etykiety pod kostkami
+    qs('#dice-labels').classList.remove('hidden');
+    qs('#die-pink-label').textContent   = NAMES[pink]  || pink;
+    qs('#die-yellow-label').textContent = NAMES[yellow] || yellow;
 
     // Fox
     if (pink === 'fox' || yellow === 'fox') handleFox(player);
@@ -306,7 +391,7 @@ const Game = {
     UI.renderGame();
 
     // Przejdź do kolejnego gracza po chwili
-    setTimeout(() => Game.nextTurn(), 1800);
+    setTimeout(() => Game.nextTurn(), 2000);
   },
 
   nextTurn() {
