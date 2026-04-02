@@ -165,7 +165,20 @@ Utworzono profesjonalne `README.md` z:
 
 `historia-zmian.md` zaktualizowany o tę komendę.
 
-**Commit:** `61559da` → nowy — *docs: add README with game rules and online link*
+**Commit:** `5ae5b0a` — *docs: add README with game rules and online link*
+
+---
+
+### 11. `Utwórz plik historia-zmian.md i zapisuj moje kolejne komendy, tak, by uczniowie mogli prześledzić mój proces vibe-codingu`
+
+Utworzono ten właśnie plik 📄 — dokumentuje cały przebieg sesji:
+- Każdą komendę dokładnie tak jak została wypowiedziana
+- Co AI zrobiło w odpowiedzi (z detalami technicznymi)
+- Numer commita do każdej zmiany
+- Szczegółowy opis znalezionego buga (#5) jako przykład debugowania
+- Sekcję z wnioskami dydaktycznymi dla uczniów
+
+**Commit:** `61559da` — *docs: add vibe-coding change history for students*
 
 ---
 
@@ -184,3 +197,19 @@ Utworzono profesjonalne `README.md` z:
 - Nie wyczuje intencji której nie powiedziałeś
 - Nie przetestuje gry zamiast Ciebie (to Ty musisz zagrać i zgłosić bug)
 - Nie zdecyduje o UX — musisz mu powiedzieć co Ci się nie podoba
+
+---
+
+### 12. `Utwórz plik readme.md w którym będzie adres do gry online, opis jak grać, profesjonalne readme, link do specyfikacja.md i historia-zmian.md, pamiętaj by trzymać wszystkie pliki aktualnymi`
+
+Utworzono profesjonalne `README.md` z:
+- Linkiem do gry online: [schoolhackday.github.io/animal-farm](https://schoolhackday.github.io/animal-farm/)
+- Pełnymi zasadami gry (cel, kostki, rozmnażanie, drapieżniki, przeliczniki wymiany)
+- Tabelami: kostki K12, pula zwierząt, drapieżniki
+- Opisem trybów gry (lokalny i sieciowy)
+- Instrukcją uruchomienia lokalnego (`git clone` + `npx serve`)
+- Strukturą projektu z opisem każdego pliku
+- Tabelą linków do dokumentacji (`specyfikacja.md`, `SUPABASE.md`, `historia-zmian.md`)
+- Sekcją o vibe-codingu jako metodzie tworzenia gry
+
+**Commit:** `5ae5b0a` — *docs: add README with game rules and online link*
