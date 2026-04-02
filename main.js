@@ -155,9 +155,9 @@ function calcBreeding(inventory, pink, yellow) {
   return result;
 }
 
-/** Zastosuj rozmnażanie z puli */
+/** Zastosuj rozmnażanie z puli — zwraca string do loga */
 function applyBreeding(player, gained) {
-  let any = false;
+  const parts = [];
   for (const [a, count] of Object.entries(gained)) {
     if (count <= 0) continue;
     const avail  = gs.pool[a] || 0;
@@ -165,31 +165,24 @@ function applyBreeding(player, gained) {
     if (actual > 0) {
       player.inventory[a] = (player.inventory[a] || 0) + actual;
       gs.pool[a] -= actual;
-      addLog(`${player.name} +${actual}${EMOJI[a]}`, 'good');
-      any = true;
+      parts.push(`+${actual}${EMOJI[a]}`);
     }
   }
-  if (!any) addLog(`${player.name} —`, 'normal');
+  return parts.length ? parts.join(' ') : '—';
 }
 
-/** Obsługa lisa */
+/** Obsługa lisa — zwraca string do loga */
 function handleFox(player) {
-  if (player.inventory.smallDog > 0) {
-    addLog(`🦊 ${player.name} — ${EMOJI.smallDog} ochronił`, 'normal');
-    return;
-  }
+  if (player.inventory.smallDog > 0) return `🦊${EMOJI.smallDog}ok`;
   const n = player.inventory.rabbit || 0;
   player.inventory.rabbit = 0;
   gs.pool.rabbit = (gs.pool.rabbit || 0) + n;
-  addLog(`🦊 ${player.name} -${n}${EMOJI.rabbit}`, 'bad');
+  return `🦊-${n}${EMOJI.rabbit}`;
 }
 
-/** Obsługa wilka */
+/** Obsługa wilka — zwraca string do loga */
 function handleWolf(player) {
-  if (player.inventory.bigDog > 0) {
-    addLog(`🐺 ${player.name} — ${EMOJI.bigDog} ochronił`, 'normal');
-    return;
-  }
+  if (player.inventory.bigDog > 0) return `🐺${EMOJI.bigDog}ok`;
   const lost = [];
   for (const a of ['rabbit','sheep','pig','cow']) {
     const n = player.inventory[a] || 0;
@@ -199,11 +192,7 @@ function handleWolf(player) {
       player.inventory[a] = 0;
     }
   }
-  if (lost.length === 0) {
-    addLog(`🐺 ${player.name} — brak strat`, 'bad');
-  } else {
-    addLog(`🐺 ${player.name} ${lost.join(' ')}`, 'bad');
-  }
+  return lost.length ? `🐺${lost.join('')}` : '🐺—';
 }
 
 function hasWon(player) {
@@ -259,7 +248,7 @@ function doTrade(giving, receiving, player) {
   }
   const gParts = Object.entries(giving).filter(([,v])=>v>0).map(([a,v])=>`${v}${EMOJI[a]}`).join(' ');
   const rParts = Object.entries(receiving).filter(([,v])=>v>0).map(([a,v])=>`${v}${EMOJI[a]}`).join(' ');
-  addLog(`💱 ${player.name}: ${gParts}→${rParts}`, 'good');
+  addLog(`🛍️ ${player.name}: ${gParts}→${rParts}`, 'good');
 }
 
 // ================================================================
@@ -348,23 +337,27 @@ const Game = {
     gs.lastDice  = { pink, yellow };
     gs.phase     = 'rolled';
 
-    addLog(`🎲 ${player.name}: ${EMOJI[pink]||pink}+${EMOJI[yellow]||yellow}`, 'turn');
-
     // Pokaż etykiety pod kostkami
     qs('#dice-labels').classList.remove('hidden');
     qs('#die-pink-label').textContent   = NAMES[pink]  || pink;
     qs('#die-yellow-label').textContent = NAMES[yellow] || yellow;
 
-    // Fox
-    if (pink === 'fox' || yellow === 'fox') handleFox(player);
-    // Wolf
-    if (pink === 'wolf' || yellow === 'wolf') handleWolf(player);
+    // Zbierz efekty w stringi, aplikuj zmiany
+    let eventPart = '';
+    if (pink === 'fox'  || yellow === 'fox')  eventPart += ' ' + handleFox(player);
+    if (pink === 'wolf' || yellow === 'wolf') eventPart += ' ' + handleWolf(player);
+
+    const gained = calcBreeding(player.inventory, pink, yellow);
+    const breedPart = applyBreeding(player, gained);
+
+    // Jedna linia: "Pati 🐰+🐑 +2🐰"  lub  "Pati 🦊+🐑 🦊-3🐰"
+    const hasBad = eventPart.includes('🦊') || eventPart.includes('🐺');
+    const logLine = `${player.name} ${EMOJI[pink]||pink}+${EMOJI[yellow]||yellow}${eventPart} ${breedPart}`;
+    addLog(logLine.trim(), hasBad ? 'bad' : breedPart !== '—' ? 'good' : 'normal');
 
     // Rozmnażanie
     const gained = calcBreeding(player.inventory, pink, yellow);
-    applyBreeding(player, gained);
-
-    // Sprawdź wygraną
+        // Sprawdź wygraną
     if (hasWon(player)) {
       gs.phase  = 'end';
       gs.winner = player;
@@ -389,7 +382,6 @@ const Game = {
     gs.tradeUsed   = false;
     gs.lastDice    = null;
     const next = gs.players[gs.currentIdx];
-    addLog(`▶ ${next.name}`, 'turn');
     if (gs.mode === 'network') Net.pushState();
     UI.renderGame();
 
@@ -596,7 +588,6 @@ const Net = {
     gs.phase     = 'trade';
     gs.gameId    = gs.gameId;
     gs.currentIdx = 0;
-    addLog(`▶ ${gs.players[0].name}`, 'turn');
 
     await supaClient.from('game_sessions')
       .update({ state: gs, updated_at: new Date().toISOString() })
@@ -725,7 +716,6 @@ const UI = {
     });
 
     gs = createGame(players, 'local');
-    addLog(`▶ ${gs.players[0].name}`, 'turn');
     UI.showScreen('screen-game');
     UI.renderGame();
 
@@ -821,7 +811,7 @@ const UI = {
     qs('#turn-badge').textContent = `Tura: ${player ? player.name : '–'}`;
     qs('#turn-badge').style.borderLeftColor = player ? player.color : 'var(--accent)';
 
-    const phaseLabels = { trade: '💱 Wymiana / Rzut', rolled: '🎲 Wyrzucono!', end: '🏆 Koniec!', lobby: '⏳ Lobby' };
+    const phaseLabels = { trade: '🛍️ Wymiana / Rzut', rolled: '🎲 Wyrzucono!', end: '🏆 Koniec!', lobby: '⏳ Lobby' };
     qs('#phase-badge').textContent = phaseLabels[gs.phase] || gs.phase;
 
     // Kostki

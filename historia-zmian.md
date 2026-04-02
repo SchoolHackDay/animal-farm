@@ -246,3 +246,15 @@ Utworzono profesjonalne `README.md` z:
 - Ikona wymiany: `🛒` (koszyk) → `🏪` (sklep)
 
 **Commit:** → nowy — *fix: prevent double game code generation; trade icon shop*
+
+---
+
+### 15. `w logu nadal jest za dużo, powinna w danej rundzie być tylko jedna linia (lub 2 jeśli gracz coś wymieniał), ikona wymiany wszędzie taka sama = sklep, ale inna - obecna jest nieładna`
+
+- Log skondensowany: **jedna linia na turę** (np. `Pati 🐰+🐑 +2🐰`) lub dwie jeśli była wymiana
+- `handleFox`, `handleWolf`, `applyBreeding` teraz zwracają string zamiast logować
+- `_processRoll` skleja całość w jedną linię
+- Usunięto separatory `▶ Name` – redundantne przy nowym formacie
+- Ikona wymiany: `🏪` → `🛍️` (torby zakupowe) — wszędzie jednolicie (przycisk, modal, log, badge fazy)
+
+**Commit:** → nowy — *ui: single log line per turn; unified shop icon 🛍️*
