@@ -258,13 +258,18 @@ select { appearance: auto; cursor: pointer; }
 .game-main {
   flex: 1;
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "action players"
+    "pool   players";
   gap: .6rem;
   min-height: 0;
 }
 
 /* ---- Panel akcji ---- */
 .action-panel {
+  grid-area: action;
   display: flex;
   flex-direction: column;
   gap: .75rem;
@@ -345,13 +350,16 @@ select { appearance: auto; cursor: pointer; }
 
 /* ---- Pool ---- */
 .pool-box {
+  grid-area: pool;
   background: var(--surface);
   border-radius: var(--radius);
-  padding: .75rem;
+  padding: .4rem .6rem;
   border: 1px solid var(--border);
+  align-self: start;
 }
+.pool-box .section-title { margin-bottom: .3rem; }
 .section-title {
-  font-size: .85rem;
+  font-size: .75rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: .05em;
@@ -361,18 +369,18 @@ select { appearance: auto; cursor: pointer; }
 .pool-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: .3rem;
+  gap: .2rem;
 }
 .pool-item {
   display: flex;
   align-items: center;
-  gap: .3rem;
-  font-size: .82rem;
+  gap: .25rem;
+  font-size: .72rem;
   background: var(--card);
-  border-radius: 6px;
-  padding: .25rem .5rem;
+  border-radius: 5px;
+  padding: .15rem .35rem;
 }
-.pool-item .emoji { font-size: 1.1rem; }
+.pool-item .emoji { font-size: .95rem; }
 .pool-item .count {
   font-weight: 700;
   color: var(--accent);
@@ -382,6 +390,7 @@ select { appearance: auto; cursor: pointer; }
 
 /* ---- Panel graczy ---- */
 .players-panel {
+  grid-area: players;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -594,20 +603,22 @@ select { appearance: auto; cursor: pointer; }
 ================================================================ */
 @media (max-width: 700px) {
   .game-main {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
   }
-  .action-panel {
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: .5rem;
-    align-items: flex-start;
-  }
+  .players-panel { order: 1; }
+  .action-panel  { order: 2; flex-direction: row; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
+  .pool-box      { order: 3; width: 100%; }
   .dice-area { flex-shrink: 0; }
   .action-btns { flex-direction: row; flex-wrap: wrap; }
-  .pool-box { width: 100%; }
   .trade-layout { flex-direction: column; }
   .trade-arrow { padding-top: 0; align-self: center; transform: rotate(90deg); }
   .modal-box { padding: .85rem; }
+}
+
+/* Zapobiegaj double-tap zoom na przyciskach i elementach interaktywnych */
+button, .t-btn, .inv-item, .pool-item {
+  touch-action: manipulation;
 }
 
 /* ================================================================

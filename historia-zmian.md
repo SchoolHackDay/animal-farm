@@ -380,3 +380,15 @@ Utworzono profesjonalne `README.md` z:
 - AI nie sprzedaje psów żeby kupić inne zwierzęta
 
 **Commit:** → *feat: smarter AI trading - trade down + dog buying*
+
+---
+
+### 29. `poprawki mobile: pula niżej, blokada zoom, mniejsza pula`
+
+- Pula przeniesiona poniżej kart graczy (na mobile gracze → kostki/przyciski → pula)
+- Desktop: CSS grid-template-areas (action | players / pool | players)
+- Blokada double-tap zoom: `maximum-scale=1.0, user-scalable=no` w viewport
+- `touch-action: manipulation` na przyciskach, t-btn, inv-item, pool-item
+- Pula mniejsza: padding, font-size, gap zmniejszone
+
+**Commit:** → *fix: mobile layout - pool below players, no zoom, compact pool*

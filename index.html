@@ -2,7 +2,7 @@
 <html lang="pl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>🐾 Animal Farm</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -152,15 +152,16 @@
           <button class="btn btn-trade" id="btn-trade" onclick="UI.openTradeModal()" disabled>🛍️ Wymiana</button>
           <button class="btn btn-roll" id="btn-roll" onclick="Game.roll()" disabled>🎲 Rzuć</button>
         </div>
-        <!-- PULA -->
-        <div class="pool-box">
-          <h4 class="section-title">🏦 Pula</h4>
-          <div id="pool-grid" class="pool-grid"></div>
-        </div>
       </section>
 
       <!-- PANEL GRACZY -->
       <section class="players-panel" id="players-panel"></section>
+
+      <!-- PULA -->
+      <div class="pool-box">
+        <h4 class="section-title">🏦 Pula</h4>
+        <div id="pool-grid" class="pool-grid"></div>
+      </div>
 
     </main>
 
