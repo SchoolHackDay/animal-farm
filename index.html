@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🐾 Animal Farm</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ============================================================
+     EKRAN STARTOWY
+============================================================ -->
+<div id="screen-start" class="screen active">
+  <div class="center-box">
+    <div class="logo">🐾</div>
+    <h1>Animal Farm</h1>
+    <p class="subtitle">Gra planszowa dla 1–6 graczy</p>
+    <div class="btn-stack">
+      <button class="btn btn-primary btn-lg" onclick="UI.showLocalSetup()">🏠 Gra Lokalna</button>
+      <button class="btn btn-secondary btn-lg" onclick="UI.showNetworkSetup()">🌐 Gra Sieciowa</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     USTAWIENIA LOKALNEJ GRY
+============================================================ -->
+<div id="screen-local-setup" class="screen">
+  <div class="screen-inner">
+    <div class="screen-top">
+      <button class="btn btn-back" onclick="UI.showScreen('screen-start')">← Wstecz</button>
+      <h2>🏠 Gra Lokalna</h2>
+    </div>
+    <label class="field-label">Liczba graczy:
+      <select id="sel-player-count" onchange="UI.updatePlayerSetup()">
+        <option value="1">1</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+    </label>
+    <div id="player-setup-list"></div>
+    <button class="btn btn-primary btn-lg" onclick="UI.startLocalGame()">▶ Start</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     WYBÓR TRYBU SIECIOWEGO
+============================================================ -->
+<div id="screen-network-setup" class="screen">
+  <div class="center-box">
+    <div class="screen-top">
+      <button class="btn btn-back" onclick="UI.showScreen('screen-start')">← Wstecz</button>
+      <h2>🌐 Gra Sieciowa</h2>
+    </div>
+    <div class="btn-stack">
+      <button class="btn btn-primary btn-lg" onclick="UI.showNetworkCreate()">➕ Utwórz grę</button>
+      <button class="btn btn-secondary btn-lg" onclick="UI.showScreen('screen-network-join')">🔗 Dołącz do gry</button>
+    </div>
+    <button class="btn btn-outline btn-sm mt-1" onclick="UI.showSupabaseConfig()">⚙️ Konfiguracja Supabase</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     TWORZENIE GRY SIECIOWEJ
+============================================================ -->
+<div id="screen-network-create" class="screen">
+  <div class="screen-inner">
+    <div class="screen-top">
+      <button class="btn btn-back" onclick="UI.showScreen('screen-network-setup')">← Wstecz</button>
+      <h2>➕ Utwórz grę</h2>
+    </div>
+    <div class="form-group">
+      <label class="field-label">Twoje imię:</label>
+      <input id="inp-create-name" type="text" placeholder="Podaj imię..." maxlength="20" />
+    </div>
+    <button class="btn btn-primary" onclick="Net.createGame()">Utwórz grę</button>
+
+    <div id="lobby-panel" class="hidden">
+      <div class="lobby-code-box">
+        <span class="label">Kod gry:</span>
+        <span id="lobby-code" class="code-badge">----</span>
+        <button class="btn btn-sm btn-outline" onclick="UI.copyCode()">📋</button>
+      </div>
+      <div id="lobby-qr"></div>
+      <div id="lobby-players-list">
+        <h4>Gracze w lobby:</h4>
+        <ul id="lobby-ul"></ul>
+      </div>
+      <p class="hint" id="lobby-hint">Oczekiwanie na graczy…</p>
+      <button id="btn-start-network" class="btn btn-primary btn-lg" onclick="Net.startGame()" disabled>▶ Start gry</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     DOŁĄCZANIE DO GRY SIECIOWEJ
+============================================================ -->
+<div id="screen-network-join" class="screen">
+  <div class="screen-inner">
+    <div class="screen-top">
+      <button class="btn btn-back" onclick="UI.showScreen('screen-network-setup')">← Wstecz</button>
+      <h2>🔗 Dołącz do gry</h2>
+    </div>
+    <div class="form-group">
+      <label class="field-label">Kod gry:</label>
+      <input id="inp-join-code" type="text" placeholder="XXXXXX" maxlength="6"
+             style="text-transform:uppercase;font-size:1.4rem;letter-spacing:4px;text-align:center" />
+    </div>
+    <div class="form-group">
+      <label class="field-label">Twoje imię:</label>
+      <input id="inp-join-name" type="text" placeholder="Podaj imię..." maxlength="20" />
+    </div>
+    <button class="btn btn-primary btn-lg" onclick="Net.joinGame()">Dołącz →</button>
+
+    <div id="join-waiting" class="hidden">
+      <p class="hint">⏳ Oczekiwanie na start gry…</p>
+      <div id="join-lobby-players"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     EKRAN GRY
+============================================================ -->
+<div id="screen-game" class="screen">
+  <div class="game-layout">
+
+    <!-- NAGŁÓWEK -->
+    <header class="game-header">
+      <div class="turn-badge" id="turn-badge">Tura: –</div>
+      <div class="phase-badge" id="phase-badge">–</div>
+    </header>
+
+    <!-- HANDOFF (lokalna gra wielu graczy) -->
+    <div id="handoff-overlay" class="handoff-overlay hidden">
+      <div class="handoff-box">
+        <div id="handoff-emoji" class="handoff-emoji">🐾</div>
+        <h2 id="handoff-title">Tura gracza</h2>
+        <p id="handoff-name" class="handoff-player"></p>
+        <button class="btn btn-primary btn-lg" onclick="UI.dismissHandoff()">▶ Zaczynam turę!</button>
+      </div>
+    </div>
+
+    <!-- GŁÓWNA ARENA -->
+    <main class="game-main">
+
+      <!-- PANEL AKCJI + KOSTKI -->
+      <section class="action-panel">
+        <div class="dice-area" id="dice-area">
+          <div class="die pink-die" id="die-pink">🎲</div>
+          <div class="die yellow-die" id="die-yellow">🎲</div>
+        </div>
+        <div class="dice-labels hidden" id="dice-labels">
+          <span id="die-pink-label"></span>
+          <span id="die-yellow-label"></span>
+        </div>
+        <div class="action-btns">
+          <button class="btn btn-trade" id="btn-trade" onclick="UI.openTradeModal()" disabled>💱 Wymiana</button>
+          <button class="btn btn-roll" id="btn-roll" onclick="Game.roll()" disabled>🎲 Rzuć</button>
+        </div>
+        <!-- PULA -->
+        <div class="pool-box">
+          <h4 class="section-title">🏦 Pula</h4>
+          <div id="pool-grid" class="pool-grid"></div>
+        </div>
+      </section>
+
+      <!-- PANEL GRACZY -->
+      <section class="players-panel" id="players-panel"></section>
+
+    </main>
+
+    <!-- LOG ZDARZEŃ -->
+    <aside class="game-log">
+      <h4 class="section-title">📋 Log zdarzeń</h4>
+      <div id="event-log" class="log-content"></div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ============================================================
+     EKRAN KOŃCA GRY
+============================================================ -->
+<div id="screen-end" class="screen">
+  <div class="center-box">
+    <div class="win-trophy">🏆</div>
+    <h1>Koniec gry!</h1>
+    <div id="winner-info"></div>
+    <button class="btn btn-primary btn-lg mt-1" onclick="UI.showScreen('screen-start')">🔄 Nowa gra</button>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: WYMIANA
+============================================================ -->
+<div id="modal-trade" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="UI.closeTradeModal()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>💱 Wymiana</h3>
+      <button class="btn-close" onclick="UI.closeTradeModal()">✕</button>
+    </div>
+    <div class="trade-layout">
+      <div class="trade-col" id="trade-col-give">
+        <h4>Dajesz 👇</h4>
+        <div id="trade-give-list" class="trade-list"></div>
+        <div class="trade-val-row">
+          Wartość: <span id="trade-give-val" class="trade-val">0</span> 🐰
+        </div>
+      </div>
+      <div class="trade-arrow">⇄</div>
+      <div class="trade-col" id="trade-col-recv">
+        <h4>Dostajesz 👆</h4>
+        <div id="trade-recv-list" class="trade-list"></div>
+        <div class="trade-val-row">
+          Wartość: <span id="trade-recv-val" class="trade-val">0</span> 🐰
+        </div>
+      </div>
+    </div>
+    <div id="trade-msg" class="trade-msg"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="UI.resetTrade()">🔄 Reset</button>
+      <button class="btn btn-primary" id="btn-do-trade" onclick="UI.confirmTrade()" disabled>✅ Zatwierdź</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: KONFIGURACJA SUPABASE
+============================================================ -->
+<div id="modal-supabase" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="UI.closeSupabaseConfig()"></div>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>⚙️ Konfiguracja Supabase</h3>
+      <button class="btn-close" onclick="UI.closeSupabaseConfig()">✕</button>
+    </div>
+    <p style="font-size:.85rem;color:#888">Tryb sieciowy wymaga własnego projektu Supabase. Uruchom poniższy SQL w SQL Editorze:</p>
+    <pre class="code-block" id="supabase-schema-pre"></pre>
+    <div class="form-group">
+      <label class="field-label">Supabase URL:</label>
+      <input id="inp-supa-url" type="text" placeholder="https://xxx.supabase.co" />
+    </div>
+    <div class="form-group">
+      <label class="field-label">Supabase Anon Key:</label>
+      <input id="inp-supa-key" type="text" placeholder="eyJ..." />
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="UI.saveSupabaseConfig()">💾 Zapisz</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     SKRYPTY
+============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
