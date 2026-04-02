@@ -946,22 +946,19 @@ const UI = {
 
   _buildTradeModal() {
     const player = gs.players[gs.currentIdx];
+    const inv    = player.inventory;
 
-    // "Dajesz" – z inwentarza gracza
-    const giveList = qs('#trade-give-list');
-    giveList.innerHTML = TRADEABLE.map(a => {
-      const have = player.inventory[a] || 0;
-      if (have === 0 && !trade.giving[a]) return '';
-      return UI._tradeRow(a, have, 'give');
-    }).join('') || '<p class="hint" style="padding:.5rem">Brak zwierząt w inwentarzu</p>';
+    // "Dajesz" – pokaż zwierzęta które gracz ma LUB które już dodał do wymiany
+    const giveRows = TRADEABLE.filter(a => (inv[a] || 0) > 0 || (trade.giving[a] || 0) > 0);
+    qs('#trade-give-list').innerHTML = giveRows.length
+      ? giveRows.map(a => UI._tradeRow(a, inv[a] || 0, 'give')).join('')
+      : '<p class="hint" style="padding:.5rem">Brak zwierząt w inwentarzu</p>';
 
-    // "Dostajesz" – z puli
-    const recvList = qs('#trade-recv-list');
-    recvList.innerHTML = TRADEABLE.map(a => {
-      const avail = gs.pool[a] || 0;
-      if (avail === 0 && !trade.receiving[a]) return '';
-      return UI._tradeRow(a, avail, 'recv');
-    }).join('') || '<p class="hint" style="padding:.5rem">Pula pusta</p>';
+    // "Dostajesz" – pokaż zwierzęta dostępne w puli LUB już wybrane
+    const recvRows = TRADEABLE.filter(a => (gs.pool[a] || 0) > 0 || (trade.receiving[a] || 0) > 0);
+    qs('#trade-recv-list').innerHTML = recvRows.length
+      ? recvRows.map(a => UI._tradeRow(a, gs.pool[a] || 0, 'recv')).join('')
+      : '<p class="hint" style="padding:.5rem">Pula pusta</p>';
 
     UI._validateTradeUI();
   },
