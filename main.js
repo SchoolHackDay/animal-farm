@@ -382,7 +382,7 @@ const Game = {
     if (gs.mode === 'local' && hasRealPlayers && !next.isAI) {
       // brak ekranu przekazania – gra płynnie przechodzi do kolejnego gracza
     } else if (next.isAI) {
-      aiTimer = setTimeout(() => Game.aiTurn(next), 900);
+      aiTimer = setTimeout(() => Game.aiTurn(next), 0);
     }
   },
 
@@ -398,8 +398,8 @@ const Game = {
     }
     UI.renderGame();
 
-    // AI: rzut z flagą fast=true, skrócona pauza wejścia
-    setTimeout(() => Game.roll(true), 300);
+    // AI: rzut natychmiastowy
+    setTimeout(() => Game.roll(true), 0);
   }
 };
 
@@ -742,7 +742,7 @@ const UI = {
 
     const first = gs.players[0];
     if (first.isAI) {
-      aiTimer = setTimeout(() => Game.aiTurn(first), 1000);
+      aiTimer = setTimeout(() => Game.aiTurn(first), 0);
     }
   },
 
