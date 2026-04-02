@@ -505,9 +505,13 @@ const Net = {
   },
 
   async createGame() {
+    const btn = qs('#screen-network-create .btn-primary');
+    if (btn && btn.disabled) return;           // guard: podwójne kliknięcie
+    if (btn) btn.disabled = true;
+
     const nameInput = qs('#inp-create-name');
     const name = nameInput.value.trim();
-    if (!name) { alert('Podaj swoje imię'); return; }
+    if (!name) { if (btn) btn.disabled = false; alert('Podaj swoje imię'); return; }
 
     if (!supaClient && !Net.init()) {
       alert('Skonfiguruj Supabase najpierw (⚙️ Konfiguracja Supabase)');

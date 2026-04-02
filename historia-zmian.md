@@ -237,3 +237,12 @@ Utworzono profesjonalne `README.md` z:
 - Przycisk wymiany: ikona `💱` → `🛒`, kolor `#6a3fa0` (fiolet) → `#3a7bd5` (jasny niebieski)
 
 **Commit:** → nowy — *ui: hide dice text labels, trade button shop icon + lighter color*
+
+---
+
+### 14. `przy tworzeniu gry sieciowej kod losuje się 2 razy, ikona wymiany: nie koszyk, tylko sklep`
+
+- Naprawiono podwójne wywołanie `Net.createGame()` przez szybkie/podwójne kliknięcie: przycisk blokuje się natychmiast przy pierwszym kliknięciu
+- Ikona wymiany: `🛒` (koszyk) → `🏪` (sklep)
+
+**Commit:** → nowy — *fix: prevent double game code generation; trade icon shop*
