@@ -276,49 +276,41 @@ const ALL_DICE_FACES = [...new Set([...PINK_DICE, ...YELLOW_DICE])];
  * @param {string} finalYellow – wylosowany wynik żółtej kostki
  * @param {Function} onDone    – callback po zakończeniu animacji
  */
-function animateDice(finalPink, finalYellow, onDone) {
+function animateDice(finalPink, finalYellow, onDone, fast) {
   const elPink   = qs('#die-pink');
   const elYellow = qs('#die-yellow');
 
-  // Ukryj etykiety na czas animacji
   qs('#dice-labels').classList.add('hidden');
-
-  // Uruchom klasę jitter (infinite shake via CSS)
   elPink.classList.add('rolling');
   elYellow.classList.add('rolling');
 
-  // Harmonogram klatek – zwalniamy pod koniec
-  const schedule = [
-    55, 60, 65, 70, 75,   // szybko
-    90, 100, 115,          // średnio
-    140, 165, 195,         // wolniej
-    230, 270, 310          // powoli
-  ];
+  // Harmonogram klatek: human = płynny, AI = błyskawiczny
+  const schedule = fast
+    ? [40, 50, 60]                            // AI – 3 klatki, ~150ms łącznie
+    : [55, 65, 75, 90, 110, 140, 175, 220];   // gracz – 8 klatek, ~930ms łącznie
 
   let frame = 0;
 
   function nextFrame() {
     if (frame >= schedule.length) {
-      // --- Zatrzymanie: pokaż wynik ---
       elPink.classList.remove('rolling');
       elYellow.classList.remove('rolling');
 
-      elPink.textContent   = EMOJI[finalPink]   || finalPink;
-      elYellow.textContent = EMOJI[finalYellow]  || finalYellow;
+      elPink.textContent   = EMOJI[finalPink]  || finalPink;
+      elYellow.textContent = EMOJI[finalYellow] || finalYellow;
 
-      // Animacja "lądowania"
       elPink.classList.add('landed');
       elYellow.classList.add('landed');
 
+      const landDelay = fast ? 120 : 380;
       setTimeout(() => {
         elPink.classList.remove('landed');
         elYellow.classList.remove('landed');
         onDone();
-      }, 480);
+      }, landDelay);
       return;
     }
 
-    // Losuj różne emoji dla obu kostek
     elPink.textContent   = EMOJI[ALL_DICE_FACES[rand(ALL_DICE_FACES.length)]];
     elYellow.textContent = EMOJI[ALL_DICE_FACES[rand(ALL_DICE_FACES.length)]];
 
@@ -336,26 +328,23 @@ function animateDice(finalPink, finalYellow, onDone) {
 const Game = {
 
   /** Wykonaj rzut dla bieżącego gracza */
-  roll() {
+  roll(fast) {
     if (!gs || gs.phase !== 'trade') return;
     if (gs.mode === 'network' && gs.players[gs.currentIdx].id !== myPlayerId) return;
 
-    // Wylosuj wynik z góry
     const pink   = rollDie(PINK_DICE);
     const yellow = rollDie(YELLOW_DICE);
 
-    // Zablokuj przyciski na czas animacji
     qs('#btn-roll').disabled  = true;
     qs('#btn-trade').disabled = true;
 
-    // Uruchom animację – po jej zakończeniu przetwórz turę
     animateDice(pink, yellow, () => {
-      Game._processRoll(pink, yellow);
-    });
+      Game._processRoll(pink, yellow, fast);
+    }, fast);
   },
 
   /** Przetwarza wyniki rzutu (po animacji) */
-  _processRoll(pink, yellow) {
+  _processRoll(pink, yellow, fast) {
     const player = gs.players[gs.currentIdx];
     gs.lastDice  = { pink, yellow };
     gs.phase     = 'rolled';
@@ -390,8 +379,8 @@ const Game = {
     if (gs.mode === 'network') Net.pushState();
     UI.renderGame();
 
-    // Przejdź do kolejnego gracza po chwili
-    setTimeout(() => Game.nextTurn(), 2000);
+    // AI: przejdź niemal natychmiast; gracz: daj chwilę na odczytanie wyniku
+    setTimeout(() => Game.nextTurn(), fast ? 400 : 1800);
   },
 
   nextTurn() {
@@ -426,8 +415,8 @@ const Game = {
     }
     UI.renderGame();
 
-    // AI: rzut po 700ms
-    setTimeout(() => Game.roll(), 700);
+    // AI: rzut z flagą fast=true, skrócona pauza wejścia
+    setTimeout(() => Game.roll(true), 300);
   }
 };
 
