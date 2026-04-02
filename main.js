@@ -488,11 +488,15 @@ const AI = {
 const Net = {
 
   init() {
-    const url = localStorage.getItem('supaUrl');
-    const key = localStorage.getItem('supaKey');
+    // Najpierw config.js, potem localStorage (ustawienia z UI)
+    const url = (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.url)
+      ? SUPABASE_CONFIG.url
+      : localStorage.getItem('supaUrl');
+    const key = (typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.key)
+      ? SUPABASE_CONFIG.key
+      : localStorage.getItem('supaKey');
     if (!url || !key) return false;
     try {
-      // supabase jest globalnym obiektem z CDN (@supabase/supabase-js)
       supaClient = supabase.createClient(url, key);
       return true;
     } catch (e) {
