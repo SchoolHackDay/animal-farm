@@ -434,22 +434,35 @@ const AI = {
   decideTrade(player) {
     const inv = player.inventory;
 
-    // Cele w kolejności priorytetu (najdroższe pierwsze, tylko te brakujące)
+    // 1. Kup brakujące drogie zwierzę za tańsze (strategia "w górę")
     const targets = ['horse','cow','pig','sheep']
       .filter(a => (inv[a] || 0) === 0 && (gs.pool[a] || 0) > 0);
 
     for (const target of targets) {
-      const need = VALUE[target]; // wartość w królikach
-      const tr = this._buildTrade(inv, target, need);
+      const tr = this._buildBuyUp(inv, target);
       if (tr) return tr;
     }
-    return null;
+
+    // 2. Kup psa jeśli warto (ochrona przed drapieżnikami)
+    const totalValue = calcValue(inv);
+    if ((inv.smallDog || 0) === 0 && (gs.pool.smallDog || 0) > 0 && totalValue >= 18) {
+      const tr = this._buildBuyUp(inv, 'smallDog');
+      if (tr) return tr;
+    }
+    if ((inv.bigDog || 0) === 0 && (gs.pool.bigDog || 0) > 0 && totalValue >= 72) {
+      const tr = this._buildBuyUp(inv, 'bigDog');
+      if (tr) return tr;
+    }
+
+    // 3. Rozmień nadmiar drogich zwierząt na brakujące tańsze (strategia "w dół")
+    return this._buildTradeDown(inv);
   },
 
-  /** Próbuje zbudować wymianę jednego targetu z danych zwierząt */
-  _buildTrade(inv, targetAnimal, targetValue) {
-    // Zbuduj "koszyk" dając zwierzęta od najtańszych
-    const sources = ['rabbit','sheep','pig','cow','horse','smallDog','bigDog']
+  /** Próbuje zbudować wymianę kupując 1 zwierzę za tańsze */
+  _buildBuyUp(inv, targetAnimal) {
+    const targetValue = VALUE[targetAnimal];
+    // Nie sprzedawaj psów żeby kupić inne zwierzęta
+    const sources = ['rabbit','sheep','pig','cow','horse']
       .filter(a => a !== targetAnimal);
 
     const giving = {};
@@ -460,26 +473,65 @@ const AI = {
       const have = inv[src] || 0;
       if (have === 0 || av === 0) continue;
       const use = Math.min(Math.floor(remaining / av), have);
-      if (use > 0) {
-        giving[src] = use;
-        remaining -= use * av;
-      }
+      if (use > 0) { giving[src] = use; remaining -= use * av; }
       if (remaining === 0) break;
     }
 
-    if (remaining !== 0) return null; // nie udało się zebrać
+    if (remaining !== 0) return null;
 
     const receiving = { [targetAnimal]: 1 };
-    // Sprawdź many-to-many
-    const gTypes = Object.values(giving).filter(v=>v>0).length;
-    if (gTypes > 1) {
-      // OK – wiele→jeden jest dozwolone
-    }
-
-    // Walidacja
     const v = validateTrade(giving, receiving, inv);
     if (!v.ok) return null;
     return { giving, receiving };
+  },
+
+  /**
+   * Jeśli gracz ma ≥2 drogich zwierząt, rozmienia 1 na brakujące tańsze
+   * (np. 2 konie → krowy + świnie które brakują do wygranej)
+   */
+  _buildTradeDown(inv) {
+    const winAnimals = ['rabbit','sheep','pig','cow','horse'];
+    const missing = winAnimals.filter(a => (inv[a] || 0) === 0);
+    if (missing.length === 0) return null; // komplet, nie trzeba rozmienić
+
+    // Szukaj nadmiaru od najdroższego
+    const expensive = ['horse','cow','pig','sheep']
+      .filter(a => (inv[a] || 0) >= 2);
+
+    for (const src of expensive) {
+      const budget = VALUE[src]; // wartość jednej sztuki oddawanego zwierzęcia
+      const giving = { [src]: 1 };
+
+      // Buduj receiving: wypełnij brakującymi od najtańszych
+      const receiving = {};
+      let remaining = budget;
+      const wantList = [...missing]
+        .sort((a, b) => VALUE[b] - VALUE[a]); // najpierw droższe z brakujących
+
+      for (const want of wantList) {
+        if ((gs.pool[want] || 0) === 0) continue;
+        const av = VALUE[want];
+        const canGet = Math.min(Math.floor(remaining / av), gs.pool[want]);
+        if (canGet > 0) {
+          receiving[want] = canGet;
+          remaining -= canGet * av;
+        }
+        if (remaining === 0) break;
+      }
+
+      // Reszta do królików (zawsze wartość 1)
+      if (remaining > 0 && (gs.pool.rabbit || 0) >= remaining) {
+        receiving.rabbit = (receiving.rabbit || 0) + remaining;
+        remaining = 0;
+      }
+
+      if (remaining !== 0) continue;
+
+      const v = validateTrade(giving, receiving, inv);
+      if (v.ok) return { giving, receiving };
+    }
+
+    return null;
   }
 };
 

@@ -368,3 +368,15 @@ Utworzono profesjonalne `README.md` z:
 - Log pokazuje: `🦊🐕odgonił→stracony` / `🐺🦮odgonił→stracony`
 
 **Commit:** → *fix: dog protects but is lost after predator attack*
+
+---
+
+### 28. `ai powinno rozmieniać też zwierzęta` + `komputer nie docenia psów`
+
+- AI zyskało 3 strategie wymiany:
+  1. **Kup w górę** — zamień tańsze za brakujące droższe zwierzę (stara strategia)
+  2. **Kup psa** — kup małego psa gdy majątek ≥18🐰, dużego gdy ≥72🐰 (nowa)
+  3. **Rozmień w dół** — mając ≥2 drogich zamień 1 na brakujące tańsze (nowa)
+- AI nie sprzedaje psów żeby kupić inne zwierzęta
+
+**Commit:** → *feat: smarter AI trading - trade down + dog buying*
