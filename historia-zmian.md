@@ -329,3 +329,11 @@ Utworzono profesjonalne `README.md` z:
 - Pozostałe zwierzęta bez zmian (emoji + liczba)
 
 **Commit:** `e819b9a` — *ui: dogs shown as lit/dimmed badge without counter in inventory*
+
+---
+
+### 24. `po rzucie jest jakaś niepotrzebna przerwa`
+
+- Opóźnienie po rzucie dla gracza-człowieka: `900ms` → `0ms`
+
+**Commit:** → nowy — *fix: remove 900ms post-roll pause for human player*
