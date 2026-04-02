@@ -268,7 +268,6 @@ function animateDice(finalPink, finalYellow, onDone, fast) {
   const elPink   = qs('#die-pink');
   const elYellow = qs('#die-yellow');
 
-  qs('#dice-labels').classList.add('hidden');
   elPink.classList.add('rolling');
   elYellow.classList.add('rolling');
 
@@ -336,11 +335,6 @@ const Game = {
     const player = gs.players[gs.currentIdx];
     gs.lastDice  = { pink, yellow };
     gs.phase     = 'rolled';
-
-    // Pokaż etykiety pod kostkami
-    qs('#dice-labels').classList.remove('hidden');
-    qs('#die-pink-label').textContent   = NAMES[pink]  || pink;
-    qs('#die-yellow-label').textContent = NAMES[yellow] || yellow;
 
     // Zbierz efekty w stringi, aplikuj zmiany
     let eventPart = '';
@@ -526,7 +520,7 @@ const Net = {
     if (error) { alert('Błąd tworzenia gry: ' + error.message); return; }
 
     qs('#lobby-code').textContent = gameId;
-    qs('#lobby-panel').classList.remove('hidden');
+    qs('#lobby-panel').classList.add('visible');
     qs('#btn-start-network').disabled = true;
 
     // QR code
@@ -575,7 +569,7 @@ const Net = {
       .update({ state: gs, updated_at: new Date().toISOString() })
       .eq('id', code);
 
-    qs('#join-waiting').classList.remove('hidden');
+    qs('#join-waiting').classList.add('visible');
     Net._subscribeToGame(code);
   },
 
@@ -806,7 +800,7 @@ const UI = {
     qs('#supabase-schema-pre').textContent = SUPABASE_SCHEMA;
     qs('#inp-supa-url').value = localStorage.getItem('supaUrl') || '';
     qs('#inp-supa-key').value = localStorage.getItem('supaKey') || '';
-    qs('#modal-supabase').classList.remove('hidden');
+    qs('#modal-supabase').classList.add('visible');
   },
 
   saveSupabaseConfig() {
@@ -822,7 +816,7 @@ const UI = {
   },
 
   closeSupabaseConfig() {
-    qs('#modal-supabase').classList.add('hidden');
+    qs('#modal-supabase').classList.remove('visible');
   },
 
   // ---------- RENDEROWANIE GRY ----------
@@ -846,14 +840,9 @@ const UI = {
       const { pink, yellow } = gs.lastDice;
       qs('#die-pink').textContent   = EMOJI[pink]  || pink;
       qs('#die-yellow').textContent = EMOJI[yellow] || yellow;
-      const labels = qs('#dice-labels');
-      labels.classList.remove('hidden');
-      qs('#die-pink-label').textContent   = NAMES[pink]  || pink;
-      qs('#die-yellow-label').textContent = NAMES[yellow] || yellow;
     } else {
       qs('#die-pink').textContent   = '🎲';
       qs('#die-yellow').textContent = '🎲';
-      qs('#dice-labels').classList.add('hidden');
     }
 
     // Przyciski
@@ -954,7 +943,7 @@ const UI = {
     trade.giving   = {};
     trade.receiving = {};
     UI._buildTradeModal();
-    qs('#modal-trade').classList.remove('hidden');
+    qs('#modal-trade').classList.add('visible');
   },
 
   _buildTradeModal() {
@@ -1028,7 +1017,7 @@ const UI = {
   },
 
   closeTradeModal() {
-    qs('#modal-trade').classList.add('hidden');
+    qs('#modal-trade').classList.remove('visible');
   }
 };
 
