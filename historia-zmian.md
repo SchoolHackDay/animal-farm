@@ -151,6 +151,24 @@ Złoty akcent (`#f4c430`) i pomarańczowy przycisk Roll zachowane.
 
 ---
 
+### 10. `Utwórz plik readme.md w którym będzie adres do gry online: https://schoolhackday.github.io/animal-farm/, opis jak grać, czyli takie profesjonalne readme, powinien być też link do wstępnej specyfikacja.md i do historia-zmian.md, pamiętaj by trzymać wszystkie pliki aktualnymi`
+
+Utworzono profesjonalne `README.md` z:
+- Linkiem do gry online: [schoolhackday.github.io/animal-farm](https://schoolhackday.github.io/animal-farm/)
+- Zasadami gry (cel, kostki, rozmnażanie, drapieżniki, wymiana)
+- Tabelą puli zwierząt
+- Opisem trybów gry (lokalny i sieciowy)
+- Instrukcją uruchomienia lokalnego
+- Strukturą projektu
+- Tabelą linków do dokumentacji (`specyfikacja.md`, `SUPABASE.md`, `historia-zmian.md`)
+- Informacją o vibe-codingu
+
+`historia-zmian.md` zaktualizowany o tę komendę.
+
+**Commit:** `61559da` → nowy — *docs: add README with game rules and online link*
+
+---
+
 ## Wnioski dla uczniów
 
 ### Co pokazuje ten proces?
