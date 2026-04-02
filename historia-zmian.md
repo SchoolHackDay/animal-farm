@@ -349,3 +349,12 @@ Utworzono profesjonalne `README.md` z:
   - psy: ukryte jeśli gracz już ma
 
 **Commit:** → nowy — *fix: 200ms post-roll pause; smart trade receive filter*
+
+---
+
+### 26. `bug: gra sieciowa, dołączając do gry można dołączyć kilka razy`
+
+- Guard na przycisk „Dołącz do gry" — wyłącza się po pierwszym kliknięciu (zapobiega race condition)
+- Walidacja po stronie stanu gry — blokuje dołączenie jeśli gracz o tym samym imieniu już istnieje
+
+**Commit:** → *fix: prevent double-join in network game*

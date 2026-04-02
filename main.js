@@ -547,9 +547,13 @@ const Net = {
   },
 
   async joinGame() {
+    const btn = qs('#btn-join-game');
+    if (btn && btn.disabled) return;
+    if (btn) btn.disabled = true;
+
     const code = qs('#inp-join-code').value.trim().toUpperCase();
     const name = qs('#inp-join-name').value.trim();
-    if (!code || !name) { alert('Podaj kod gry i imię'); return; }
+    if (!code || !name) { if (btn) btn.disabled = false; alert('Podaj kod gry i imię'); return; }
 
     if (!supaClient && !Net.init()) {
       alert('Skonfiguruj Supabase najpierw (⚙️ Konfiguracja Supabase)');
@@ -565,8 +569,9 @@ const Net = {
     if (error || !data) { alert('Nie znaleziono gry: ' + code); return; }
 
     gs = data.state;
-    if (gs.phase !== 'lobby') { alert('Gra już się rozpoczęła lub zakończyła'); return; }
-    if (gs.players.length >= 6) { alert('Gra jest pełna (max 6 graczy)'); return; }
+    if (gs.phase !== 'lobby') { if (btn) btn.disabled = false; alert('Gra już się rozpoczęła lub zakończyła'); return; }
+    if (gs.players.length >= 6) { if (btn) btn.disabled = false; alert('Gra jest pełna (max 6 graczy)'); return; }
+    if (gs.players.some(p => p.name === name)) { if (btn) btn.disabled = false; alert('Gracz o imieniu "' + name + '" już jest w tej grze'); return; }
 
     const playerId = uid();
     myPlayerId = playerId;
