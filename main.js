@@ -397,7 +397,7 @@ const Game = {
     UI.renderGame();
 
     // AI: przejdź niemal natychmiast; gracz: daj chwilę na odczytanie wyniku
-    setTimeout(() => Game.nextTurn(), fast ? 200 : 500);
+    setTimeout(() => Game.nextTurn(), 500);
   },
 
   nextTurn() {
