@@ -394,10 +394,12 @@ select { appearance: auto; cursor: pointer; }
   border-radius: var(--radius);
   padding: .6rem .75rem;
   border: 2px solid var(--border);
-  transition: border-color var(--transition);
+  transition: border-color var(--transition), opacity var(--transition), filter var(--transition);
+  opacity: .45;
+  filter: saturate(.3);
 }
-.player-card.active-player { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(244,196,48,.2); }
-.player-card.winner-card   { border-color: var(--success); }
+.player-card.active-player { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(244,196,48,.2); opacity: 1; filter: none; }
+.player-card.winner-card   { border-color: var(--success); opacity: 1; filter: none; }
 
 .player-header {
   display: flex;
