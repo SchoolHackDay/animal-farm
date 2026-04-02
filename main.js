@@ -207,6 +207,20 @@ function hasWon(player) {
   return WIN_ANIMALS.every(a => (player.inventory[a] || 0) >= 1);
 }
 
+/** Sprawdza czy gracz ma choć jedną możliwą wymianę */
+function canTrade(player) {
+  const inv = player.inventory;
+  const playerVal = calcValue(inv);
+  if (playerVal === 0) return false;
+  for (const recv of TRADEABLE) {
+    if ((gs.pool[recv] || 0) === 0) continue;
+    // Pies: nie kupuj jeśli już masz
+    if ((recv === 'smallDog' || recv === 'bigDog') && (inv[recv] || 0) >= 1) continue;
+    if (VALUE[recv] <= playerVal) return true;
+  }
+  return false;
+}
+
 // ================================================================
 // WALIDACJA I WYKONANIE WYMIANY
 // ================================================================
@@ -383,7 +397,7 @@ const Game = {
     UI.renderGame();
 
     // AI: przejdź niemal natychmiast; gracz: daj chwilę na odczytanie wyniku
-    setTimeout(() => Game.nextTurn(), fast ? 200 : 400);
+    setTimeout(() => Game.nextTurn(), fast ? 200 : 500);
   },
 
   nextTurn() {
@@ -930,7 +944,7 @@ const UI = {
     // Przyciski
     const canAct = isMyTurn && gs.phase === 'trade' && !player.isAI;
     qs('#btn-roll').disabled  = !canAct;
-    qs('#btn-trade').disabled = !canAct || gs.tradeUsed;
+    qs('#btn-trade').disabled = !canAct || gs.tradeUsed || !canTrade(player);
 
     // Pula
     UI.renderPool();
