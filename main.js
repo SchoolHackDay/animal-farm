@@ -677,20 +677,47 @@ const UI = {
 
   showLocalSetup() {
     UI.showScreen('screen-local-setup');
-    UI.updatePlayerSetup();
+    const saved = UI._loadLocalSetup();
+    if (saved) {
+      qs('#sel-player-count').value = saved.length;
+    }
+    UI.updatePlayerSetup(saved);
   },
 
-  updatePlayerSetup() {
+  _loadLocalSetup() {
+    try { return JSON.parse(localStorage.getItem('localSetup')); } catch { return null; }
+  },
+
+  _saveLocalSetup() {
+    const rows = qsa('#player-setup-list .player-setup-row');
+    const data = rows.map(row => ({
+      name: row.querySelector('input').value.trim(),
+      ai:   row.querySelector('.type-toggle').dataset.ai === '1'
+    }));
+    localStorage.setItem('localSetup', JSON.stringify(data));
+  },
+
+  updatePlayerSetup(saved) {
     const n    = parseInt(qs('#sel-player-count').value, 10);
     const list = qs('#player-setup-list');
+    // Zachowaj bieżące wartości jeśli brak saved
+    if (!saved) {
+      saved = qsa('#player-setup-list .player-setup-row').map(row => ({
+        name: row.querySelector('input').value.trim(),
+        ai:   row.querySelector('.type-toggle').dataset.ai === '1'
+      }));
+    }
     list.innerHTML = '';
     for (let i = 0; i < n; i++) {
-      const row = document.createElement('div');
+      const s    = saved && saved[i];
+      const name = s ? s.name : (i === 0 && n === 1 ? 'Ty' : `Gracz ${i+1}`);
+      const isAI = s ? s.ai : false;
+      const row  = document.createElement('div');
       row.className = 'player-setup-row';
       row.innerHTML = `
         <div class="color-dot pc-${i}"></div>
-        <input type="text" placeholder="Gracz ${i+1}" value="${i === 0 && n === 1 ? 'Ty' : 'Gracz '+(i+1)}" maxlength="20" />
-        <button class="type-toggle" data-idx="${i}" onclick="UI.toggleAI(this)">👤 Człowiek</button>
+        <input type="text" placeholder="Gracz ${i+1}" value="${escHtml(name)}" maxlength="20" />
+        <button class="type-toggle${isAI ? ' ai' : ''}" data-ai="${isAI ? '1' : '0'}" data-idx="${i}" onclick="UI.toggleAI(this)">${isAI ? '🤖 AI' : '👤 Człowiek'}</button>
       `;
       list.appendChild(row);
     }
@@ -706,6 +733,8 @@ const UI = {
   startLocalGame() {
     const rows = qsa('#player-setup-list .player-setup-row');
     if (rows.length === 0) { alert('Dodaj co najmniej jednego gracza'); return; }
+
+    UI._saveLocalSetup();
 
     const players = rows.map((row, i) => {
       const name  = row.querySelector('input').value.trim() || `Gracz ${i+1}`;

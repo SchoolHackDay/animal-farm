@@ -258,3 +258,13 @@ Utworzono profesjonalne `README.md` z:
 - Ikona wymiany: `🏪` → `🛍️` (torby zakupowe) — wszędzie jednolicie (przycisk, modal, log, badge fazy)
 
 **Commit:** → nowy — *ui: single log line per turn; unified shop icon 🛍️*
+
+---
+
+### 16. `zapisuj w local storage dla gry lokalnej: poprzedni wybór imion dla graczy, oraz to czy są AI czy nie`
+
+- Przy starcie gry (`startLocalGame`) zapisuje do `localStorage['localSetup']` tablicę `{name, ai}` dla każdego gracza
+- Przy otwarciu ekranu ustawień (`showLocalSetup`) odczytuje i przywraca: liczbę graczy, imiona, przyciski AI/Człowiek
+- Przy zmianie liczby graczy (dropdown) zachowuje istniejące wartości z formularza dla wierszy które zostają
+
+**Commit:** → nowy — *feat: persist local game player setup in localStorage*
