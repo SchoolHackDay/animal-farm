@@ -428,8 +428,11 @@ select { appearance: auto; cursor: pointer; }
 }
 .inv-item .inv-emoji { font-size: 1rem; }
 .inv-item .inv-count { font-weight: 700; }
-.inv-item.zero { opacity: .3; }
+.inv-item.zero { opacity: .25; }
 .inv-item.has  { background: #1a3060; }
+.inv-item.inv-dog { min-width: unset; padding: .2rem .35rem; }
+.inv-item.inv-dog.has  { background: #1a3060; box-shadow: 0 0 6px 1px rgba(100,181,246,.4); }
+.inv-item.inv-dog.zero { background: var(--card); opacity: .25; }
 
 .win-progress {
   display: flex;

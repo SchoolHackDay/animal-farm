@@ -895,6 +895,11 @@ const UI = {
 
       const invHtml = TRADEABLE.map(a => {
         const n = p.inventory[a] || 0;
+        if (a === 'smallDog' || a === 'bigDog') {
+          return `<div class="inv-item inv-dog${n > 0 ? ' has' : ' zero'}" title="${NAMES[a]}">
+            <span class="inv-emoji">${EMOJI[a]}</span>
+          </div>`;
+        }
         return `<div class="inv-item${n > 0 ? ' has' : ' zero'}">
           <span class="inv-emoji">${EMOJI[a]}</span>
           <span class="inv-count">${n}</span>
