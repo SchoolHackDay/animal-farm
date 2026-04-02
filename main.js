@@ -375,7 +375,7 @@ const Game = {
     UI.renderGame();
 
     // AI: przejdź niemal natychmiast; gracz: daj chwilę na odczytanie wyniku
-    setTimeout(() => Game.nextTurn(), fast ? 200 : 0);
+    setTimeout(() => Game.nextTurn(), fast ? 200 : 200);
   },
 
   nextTurn() {
@@ -968,20 +968,30 @@ const UI = {
   },
 
   _buildTradeModal() {
-    const player = gs.players[gs.currentIdx];
-    const inv    = player.inventory;
+    const player   = gs.players[gs.currentIdx];
+    const inv      = player.inventory;
+    const totalVal = calcValue(inv);   // łączna wartość inwentarza gracza
 
-    // "Dajesz" – pokaż zwierzęta które gracz ma LUB które już dodał do wymiany
+    // "Dajesz" – tylko zwierzęta które gracz ma (lub już dodał do wymiany)
     const giveRows = TRADEABLE.filter(a => (inv[a] || 0) > 0 || (trade.giving[a] || 0) > 0);
     qs('#trade-give-list').innerHTML = giveRows.length
       ? giveRows.map(a => UI._tradeRow(a, inv[a] || 0, 'give')).join('')
       : '<p class="hint" style="padding:.5rem">Brak zwierząt w inwentarzu</p>';
 
-    // "Dostajesz" – pokaż zwierzęta dostępne w puli LUB już wybrane
-    const recvRows = TRADEABLE.filter(a => (gs.pool[a] || 0) > 0 || (trade.receiving[a] || 0) > 0);
+    // "Dostajesz" – tylko zwierzęta:
+    //   • dostępne w puli (lub już wybrane)
+    //   • wartość ≤ łączna wartość inwentarza (jest sens wymiany)
+    //   • psy: tylko jeśli gracz jeszcze nie ma
+    const recvRows = TRADEABLE.filter(a => {
+      const alreadySelected = (trade.receiving[a] || 0) > 0;
+      if (!alreadySelected && (gs.pool[a] || 0) === 0) return false;
+      if ((VALUE[a] || 0) > totalVal) return false;
+      if ((a === 'smallDog' || a === 'bigDog') && (inv[a] || 0) >= 1 && !alreadySelected) return false;
+      return true;
+    });
     qs('#trade-recv-list').innerHTML = recvRows.length
       ? recvRows.map(a => UI._tradeRow(a, gs.pool[a] || 0, 'recv')).join('')
-      : '<p class="hint" style="padding:.5rem">Pula pusta</p>';
+      : '<p class="hint" style="padding:.5rem">Brak możliwych wymian</p>';
 
     UI._validateTradeUI();
   },

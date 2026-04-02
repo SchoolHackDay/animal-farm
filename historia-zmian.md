@@ -337,3 +337,15 @@ Utworzono profesjonalne `README.md` z:
 - Opóźnienie po rzucie dla gracza-człowieka: `900ms` → `0ms`
 
 **Commit:** → nowy — *fix: remove 900ms post-roll pause for human player*
+
+---
+
+### 25. `może dajmy to czekanie po rzucie, ale nie 900ms tylko 200ms, druga rzecz - podczas wymiany pokazuj tylko zwierzęta, które są możliwe`
+
+- Przerwa po rzucie przywrócona: `0ms` → `200ms` (dla człowieka i AI)
+- Modal wymiany — „Dostajesz": filtr pokazuje tylko zwierzęta:
+  - dostępne w puli
+  - o wartości ≤ łączna wartość inwentarza gracza (nie możesz kupić krowy mając 2 króliki)
+  - psy: ukryte jeśli gracz już ma
+
+**Commit:** → nowy — *fix: 200ms post-roll pause; smart trade receive filter*
