@@ -182,6 +182,20 @@ Utworzono ten właśnie plik 📄 — dokumentuje cały przebieg sesji:
 
 ---
 
+### 11. `log zdarzeń zmieńmy na "Przebieg gry", niech każde zdarzenie będzie w jednej linijce i jak najmniej tekstu, typu "Pati +1 (ikonka króliczka)" "Mariusz +1 (ikonka owcy)" itp.`
+
+Zmieniono sekcję logów:
+- Nagłówek: `📋 Log zdarzeń` → `🎮 Przebieg gry`
+- Każde zdarzenie w jednej linii, tylko imię + liczba + emoji
+- Format wpisów: `Pati +2🐰`, `Mariusz 🦊 -3🐰`, `Ania 💱 2🐑→1🐷`, `▶ Pati`
+- Separatory tur (`--- Tura: X ---`) zastąpione przez `▶ X`
+- Drapieżniki: `🦊 Pati -3🐰`, `🐺 Mariusz -2🐑 -1🐷`
+- CSS: mniejsza czcionka, brak zawijania tekstu
+
+**Commit:** → nowy — *ui: compact game log "Przebieg gry" with per-event one-liners*
+
+---
+
 ## Wnioski dla uczniów
 
 ### Co pokazuje ten proces?

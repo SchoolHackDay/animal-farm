@@ -165,45 +165,44 @@ function applyBreeding(player, gained) {
     if (actual > 0) {
       player.inventory[a] = (player.inventory[a] || 0) + actual;
       gs.pool[a] -= actual;
-      const suffix = actual < count ? ` (tylko ${actual}, pula ograniczona)` : '';
-      addLog(`+${actual} ${EMOJI[a]} ${NAMES[a]}${suffix}`, 'good');
+      addLog(`${player.name} +${actual}${EMOJI[a]}`, 'good');
       any = true;
     }
   }
-  if (!any) addLog('Brak rozmnażania', 'normal');
+  if (!any) addLog(`${player.name} —`, 'normal');
 }
 
 /** Obsługa lisa */
 function handleFox(player) {
   if (player.inventory.smallDog > 0) {
-    addLog(`${EMOJI.fox} Lis! ${EMOJI.smallDog} Mały pies ochronił króliki!`, 'normal');
+    addLog(`🦊 ${player.name} — ${EMOJI.smallDog} ochronił`, 'normal');
     return;
   }
   const n = player.inventory.rabbit || 0;
   player.inventory.rabbit = 0;
   gs.pool.rabbit = (gs.pool.rabbit || 0) + n;
-  addLog(`${EMOJI.fox} Lis! Stracono ${n} ${EMOJI.rabbit} królika/ów!`, 'bad');
+  addLog(`🦊 ${player.name} -${n}${EMOJI.rabbit}`, 'bad');
 }
 
 /** Obsługa wilka */
 function handleWolf(player) {
   if (player.inventory.bigDog > 0) {
-    addLog(`${EMOJI.wolf} Wilk! ${EMOJI.bigDog} Duży pies ochronił stado!`, 'normal');
+    addLog(`🐺 ${player.name} — ${EMOJI.bigDog} ochronił`, 'normal');
     return;
   }
   const lost = [];
   for (const a of ['rabbit','sheep','pig','cow']) {
     const n = player.inventory[a] || 0;
     if (n > 0) {
-      lost.push(`${n}${EMOJI[a]}`);
+      lost.push(`-${n}${EMOJI[a]}`);
       gs.pool[a] = (gs.pool[a] || 0) + n;
       player.inventory[a] = 0;
     }
   }
   if (lost.length === 0) {
-    addLog(`${EMOJI.wolf} Wilk! (brak zwierząt do stracenia)`, 'bad');
+    addLog(`🐺 ${player.name} — brak strat`, 'bad');
   } else {
-    addLog(`${EMOJI.wolf} Wilk! Stracono: ${lost.join(' ')}!`, 'bad');
+    addLog(`🐺 ${player.name} ${lost.join(' ')}`, 'bad');
   }
 }
 
@@ -260,7 +259,7 @@ function doTrade(giving, receiving, player) {
   }
   const gParts = Object.entries(giving).filter(([,v])=>v>0).map(([a,v])=>`${v}${EMOJI[a]}`).join(' ');
   const rParts = Object.entries(receiving).filter(([,v])=>v>0).map(([a,v])=>`${v}${EMOJI[a]}`).join(' ');
-  addLog(`💱 ${gParts} → ${rParts}`, 'good');
+  addLog(`💱 ${player.name}: ${gParts}→${rParts}`, 'good');
 }
 
 // ================================================================
@@ -349,7 +348,7 @@ const Game = {
     gs.lastDice  = { pink, yellow };
     gs.phase     = 'rolled';
 
-    addLog(`🎲 ${player.name}: ${EMOJI[pink]||pink} + ${EMOJI[yellow]||yellow}`, 'turn');
+    addLog(`🎲 ${player.name}: ${EMOJI[pink]||pink}+${EMOJI[yellow]||yellow}`, 'turn');
 
     // Pokaż etykiety pod kostkami
     qs('#dice-labels').classList.remove('hidden');
@@ -369,7 +368,7 @@ const Game = {
     if (hasWon(player)) {
       gs.phase  = 'end';
       gs.winner = player;
-      addLog(`🏆 ${player.name} wygrał grę!`, 'turn');
+      addLog(`🏆 ${player.name} wygrał!`, 'turn');
       if (gs.mode === 'network') Net.pushState();
       UI.renderGame();
       setTimeout(() => UI.showEndScreen(player), 1200);
@@ -390,7 +389,7 @@ const Game = {
     gs.tradeUsed   = false;
     gs.lastDice    = null;
     const next = gs.players[gs.currentIdx];
-    addLog(`--- Tura: ${next.name} ---`, 'turn');
+    addLog(`▶ ${next.name}`, 'turn');
     if (gs.mode === 'network') Net.pushState();
     UI.renderGame();
 
@@ -593,7 +592,7 @@ const Net = {
     gs.phase     = 'trade';
     gs.gameId    = gs.gameId;
     gs.currentIdx = 0;
-    addLog(`--- Tura: ${gs.players[0].name} ---`, 'turn');
+    addLog(`▶ ${gs.players[0].name}`, 'turn');
 
     await supaClient.from('game_sessions')
       .update({ state: gs, updated_at: new Date().toISOString() })
@@ -722,7 +721,7 @@ const UI = {
     });
 
     gs = createGame(players, 'local');
-    addLog(`--- Tura: ${gs.players[0].name} ---`, 'turn');
+    addLog(`▶ ${gs.players[0].name}`, 'turn');
     UI.showScreen('screen-game');
     UI.renderGame();
 

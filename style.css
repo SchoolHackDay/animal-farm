@@ -454,12 +454,15 @@ select { appearance: auto; cursor: pointer; }
   overflow-y: auto;
   margin-top: .5rem;
 }
-.log-content { display: flex; flex-direction: column; gap: .2rem; }
+.log-content { display: flex; flex-direction: column; gap: .1rem; }
 .log-entry {
-  font-size: .82rem;
+  font-size: .78rem;
   color: var(--text-muted);
-  padding: .15rem 0;
-  border-bottom: 1px solid rgba(255,255,255,.04);
+  padding: .08rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.03);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   animation: fadeIn .2s ease;
 }
 .log-entry.highlight { color: var(--accent); }
