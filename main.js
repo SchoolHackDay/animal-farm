@@ -520,7 +520,7 @@ const Net = {
     if (error) { alert('Błąd tworzenia gry: ' + error.message); return; }
 
     qs('#lobby-code').textContent = gameId;
-    qs('#lobby-panel').classList.add('visible');
+    qs('#lobby-panel').classList.remove('hidden');
     qs('#btn-start-network').disabled = true;
 
     // QR code
@@ -569,7 +569,7 @@ const Net = {
       .update({ state: gs, updated_at: new Date().toISOString() })
       .eq('id', code);
 
-    qs('#join-waiting').classList.add('visible');
+    qs('#join-waiting').classList.remove('hidden');
     Net._subscribeToGame(code);
   },
 
@@ -806,7 +806,7 @@ const UI = {
     qs('#supabase-schema-pre').textContent = SUPABASE_SCHEMA;
     qs('#inp-supa-url').value = localStorage.getItem('supaUrl') || '';
     qs('#inp-supa-key').value = localStorage.getItem('supaKey') || '';
-    qs('#modal-supabase').classList.add('visible');
+    qs('#modal-supabase').classList.remove('hidden');
   },
 
   saveSupabaseConfig() {
@@ -822,7 +822,7 @@ const UI = {
   },
 
   closeSupabaseConfig() {
-    qs('#modal-supabase').classList.remove('visible');
+    qs('#modal-supabase').classList.add('hidden');
   },
 
   // ---------- RENDEROWANIE GRY ----------
@@ -949,7 +949,7 @@ const UI = {
     trade.giving   = {};
     trade.receiving = {};
     UI._buildTradeModal();
-    qs('#modal-trade').classList.add('visible');
+    qs('#modal-trade').classList.remove('hidden');
   },
 
   _buildTradeModal() {
@@ -1023,7 +1023,7 @@ const UI = {
   },
 
   closeTradeModal() {
-    qs('#modal-trade').classList.remove('visible');
+    qs('#modal-trade').classList.add('hidden');
   }
 };
 
