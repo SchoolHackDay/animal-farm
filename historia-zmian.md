@@ -268,3 +268,64 @@ Utworzono profesjonalne `README.md` z:
 - Przy zmianie liczby graczy (dropdown) zachowuje istniejące wartości z formularza dla wierszy które zostają
 
 **Commit:** → nowy — *feat: persist local game player setup in localStorage*
+
+---
+
+### 17. `mała poprawka CSS - po rzucie pod kośćmi pojawia się dodatkowa linia i ekran skacze, to samo na mniejszym ekranie`
+
+- `dice-labels` zmienione z `display:none` (`.hidden`) na `visibility:hidden` z `min-height:1.1rem` — przestrzeń zawsze zarezerwowana, brak skoku layoutu
+- Usunięto całe togglowanie widoczności etykiet z JS — napisy i tak nie są potrzebne (ikonki na kostkach wystarczą)
+
+**Commit:** `381b2bd` — *fix: reserve dice-labels space to prevent layout shift on roll*
+
+---
+
+### 18. `zamknąłem poprzednią grę sieciową, teraz przy próbie utworzenia nowej gry wisi na ekranie tworzenia gry`
+
+- Przycisk "Utwórz grę" był trwale zablokowany po pierwszym użyciu (guard anty-double-click nigdy go nie odblokowywał)
+- `showNetworkCreate()` teraz zawsze resetuje stan przycisku i ukrywa stare lobby z poprzedniej sesji
+
+**Commit:** `cf6bed9` — *fix: re-enable create game button when returning to network create screen*
+
+---
+
+### 19. `wymiana nie działa`
+
+- `sed -i` zastosowany wcześniej do naprawy `dice-labels` przez pomyłkę zamienił **wszystkie** `classList.remove('hidden')` w pliku — modal wymiany, modal Supabase i panel lobby przestały działać
+- Przywrócono poprawne togglowanie `.hidden` dla wszystkich modali i paneli
+
+**Commit:** `dddcbd0` — *fix: restore hidden/visible class toggling broken by overzealous sed replace*
+
+---
+
+### 20. `2 bugi w grze sieciowej: nie działa guzik utwórz grę, dołączając do gry dołącza się podwójnie`
+
+*(bug w trakcie badania — zgłoszone, wymaga dalszej pracy)*
+
+---
+
+### 21. `AI powinno rzucać od razu, obecnie wyświetlają się 2 emblematy kostek i on chwilkę czeka`
+
+- Wszystkie opóźnienia tury AI ustawione na `0ms`: start tury, wywołanie `aiTurn`, wywołanie `roll`
+
+**Commit:** `ebe018b` — *fix: AI rolls immediately, no delay before turn*
+
+---
+
+### 22. `ważna zmiana - można mieć tylko jednego małego psa i jednego dużego, linia z ikonami wszystkich zwierząt pod inventory jest niepotrzebna`
+
+- `validateTrade`: blokuje wymianę jeśli gracz już ma psa danego rodzaju (`Można mieć tylko 1 Mały pies!`)
+- Usunięto `win-progress` (rząd ikon 🐰🐑🐷🐄🐴) z kart graczy
+
+**Commit:** `4136351` — *feat: cap dogs at 1 each; remove win-progress icon row from player cards*
+
+---
+
+### 23. `można w GUI rozróżnić to, że psy są pojedyncze - świecą się jeśli gracz ma psa, wygaszone jeśli nie ma`
+
+- Psy (`🐕` `🦮`) renderują się jako emoji-badge bez licznika
+- **Ma psa**: podświetlony kafelek z niebieską poświatą
+- **Nie ma psa**: wyszarzony/przezroczysty
+- Pozostałe zwierzęta bez zmian (emoji + liczba)
+
+**Commit:** `e819b9a` — *ui: dogs shown as lit/dimmed badge without counter in inventory*
