@@ -4,20 +4,20 @@
 
 /* ---------- ZMIENNE ---------- */
 :root {
-  --bg: #1b2e1b;
-  --surface: #243324;
-  --card: #2e4a2e;
-  --card-hover: #3a5e3a;
-  --border: #3d5e3d;
-  --text: #e8f5e8;
-  --text-muted: #8aaf8a;
+  --bg: #0d1b2e;
+  --surface: #132340;
+  --card: #1a2f52;
+  --card-hover: #243d66;
+  --border: #2a4880;
+  --text: #e0eeff;
+  --text-muted: #7a9cc8;
   --accent: #f4c430;
   --accent2: #ff9800;
   --danger: #e53935;
-  --success: #43a047;
+  --success: #29b6f6;
   --blue: #1976d2;
   --radius: 12px;
-  --shadow: 0 4px 20px rgba(0,0,0,.45);
+  --shadow: 0 4px 20px rgba(0,0,0,.55);
   --transition: .22s ease;
 
   /* kolory graczy */
@@ -427,7 +427,7 @@ select { appearance: auto; cursor: pointer; }
 .inv-item .inv-emoji { font-size: 1rem; }
 .inv-item .inv-count { font-weight: 700; }
 .inv-item.zero { opacity: .3; }
-.inv-item.has  { background: #2a4a1a; }
+.inv-item.has  { background: #1a3060; }
 
 .win-progress {
   display: flex;
@@ -442,7 +442,7 @@ select { appearance: auto; cursor: pointer; }
   background: var(--card);
   color: var(--text-muted);
 }
-.win-check.done { background: #2a4a1a; color: #76d275; }
+.win-check.done { background: #1a3060; color: #64b5f6; }
 
 /* ---- Log ---- */
 .game-log {
@@ -463,8 +463,8 @@ select { appearance: auto; cursor: pointer; }
   animation: fadeIn .2s ease;
 }
 .log-entry.highlight { color: var(--accent); }
-.log-entry.event-bad { color: #ef9a9a; }
-.log-entry.event-good { color: #a5d6a7; }
+.log-entry.event-bad  { color: #ef9a9a; }
+.log-entry.event-good { color: #90caf9; }
 .log-entry.event-turn { color: var(--text); font-weight: 600; margin-top: .2rem; }
 
 /* ================================================================
@@ -572,7 +572,7 @@ select { appearance: auto; cursor: pointer; }
   border-radius: 8px;
   padding: .75rem;
   font-size: .75rem;
-  color: #a5d6a7;
+  color: #90caf9;
   overflow-x: auto;
   white-space: pre;
   max-height: 180px;
