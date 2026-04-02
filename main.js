@@ -754,6 +754,12 @@ const UI = {
 
   showNetworkCreate() {
     UI.showScreen('screen-network-create');
+    // Odblokuj przycisk (mógł zostać zablokowany przez poprzednie tworzenie gry)
+    const btn = qs('#screen-network-create .btn-primary');
+    if (btn) btn.disabled = false;
+    // Ukryj lobby z poprzedniej sesji
+    const lobby = qs('#lobby-panel');
+    if (lobby) lobby.classList.add('hidden');
     // Sprawdź czy URL ma parametr ?join=CODE (do dołączania)
     const params = new URLSearchParams(location.search);
     const joinCode = params.get('join');
