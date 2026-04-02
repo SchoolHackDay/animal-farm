@@ -227,3 +227,13 @@ Utworzono profesjonalne `README.md` z:
 - Sekcją o vibe-codingu jako metodzie tworzenia gry
 
 **Commit:** `5ae5b0a` — *docs: add README with game rules and online link*
+
+
+---
+
+### 13. `kilka drobiazgów w UI - pod kostkami nie musi być napisów co wypadło: same ikonki są OK, Ikona na guziku "wymiana" jest za ciemna, powinna być jaśniejsza i przypominać sklep`
+
+- Napisy pod kostkami ukryte (kontener zostaje dla logiki JS, tekst niewidoczny)
+- Przycisk wymiany: ikona `💱` → `🛒`, kolor `#6a3fa0` (fiolet) → `#3a7bd5` (jasny niebieski)
+
+**Commit:** → nowy — *ui: hide dice text labels, trade button shop icon + lighter color*
