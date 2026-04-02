@@ -286,8 +286,8 @@ function animateDice(finalPink, finalYellow, onDone, fast) {
 
   // Harmonogram klatek: human = płynny, AI = błyskawiczny
   const schedule = fast
-    ? [40, 50, 60]                            // AI – 3 klatki, ~150ms łącznie
-    : [55, 65, 75, 90, 110, 140, 175, 220];   // gracz – 8 klatek, ~930ms łącznie
+    ? [20, 25, 30]                          // AI – ~75ms łącznie
+    : [28, 33, 38, 45, 55, 70, 88, 110];   // gracz – ~467ms łącznie
 
   let frame = 0;
 
@@ -302,7 +302,7 @@ function animateDice(finalPink, finalYellow, onDone, fast) {
       elPink.classList.add('landed');
       elYellow.classList.add('landed');
 
-      const landDelay = fast ? 120 : 380;
+      const landDelay = fast ? 80 : 220;
       setTimeout(() => {
         elPink.classList.remove('landed');
         elYellow.classList.remove('landed');
@@ -380,7 +380,7 @@ const Game = {
     UI.renderGame();
 
     // AI: przejdź niemal natychmiast; gracz: daj chwilę na odczytanie wyniku
-    setTimeout(() => Game.nextTurn(), fast ? 400 : 1800);
+    setTimeout(() => Game.nextTurn(), fast ? 200 : 900);
   },
 
   nextTurn() {
