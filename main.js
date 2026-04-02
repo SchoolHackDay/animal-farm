@@ -173,7 +173,11 @@ function applyBreeding(player, gained) {
 
 /** Obsługa lisa — zwraca string do loga */
 function handleFox(player) {
-  if (player.inventory.smallDog > 0) return `🦊${EMOJI.smallDog}ok`;
+  if (player.inventory.smallDog > 0) {
+    player.inventory.smallDog = 0;
+    gs.pool.smallDog = (gs.pool.smallDog || 0) + 1;
+    return `🦊${EMOJI.smallDog}odgonił→stracony`;
+  }
   const n = player.inventory.rabbit || 0;
   player.inventory.rabbit = 0;
   gs.pool.rabbit = (gs.pool.rabbit || 0) + n;
@@ -182,7 +186,11 @@ function handleFox(player) {
 
 /** Obsługa wilka — zwraca string do loga */
 function handleWolf(player) {
-  if (player.inventory.bigDog > 0) return `🐺${EMOJI.bigDog}ok`;
+  if (player.inventory.bigDog > 0) {
+    player.inventory.bigDog = 0;
+    gs.pool.bigDog = (gs.pool.bigDog || 0) + 1;
+    return `🐺${EMOJI.bigDog}odgonił→stracony`;
+  }
   const lost = [];
   for (const a of ['rabbit','sheep','pig','cow']) {
     const n = player.inventory[a] || 0;

@@ -358,3 +358,13 @@ Utworzono profesjonalne `README.md` z:
 - Walidacja po stronie stanu gry — blokuje dołączenie jeśli gracz o tym samym imieniu już istnieje
 
 **Commit:** → *fix: prevent double-join in network game*
+
+---
+
+### 27. `fix mechaniki: mały pies chroni przed lisem ale tracimy psa, duży podobnie z wilkiem`
+
+- `handleFox`: jeśli gracz ma małego psa → pies odgania lisa, ale sam zostaje stracony (wraca do puli)
+- `handleWolf`: jeśli gracz ma dużego psa → pies odgania wilka, ale sam zostaje stracony (wraca do puli)
+- Log pokazuje: `🦊🐕odgonił→stracony` / `🐺🦮odgonił→stracony`
+
+**Commit:** → *fix: dog protects but is lost after predator attack*
