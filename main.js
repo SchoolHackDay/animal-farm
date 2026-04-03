@@ -608,13 +608,15 @@ const Net = {
     qs('#lobby-panel').classList.remove('hidden');
     qs('#btn-start-network').disabled = true;
 
-    // QR code
+    // QR code + link
     const joinUrl = `${location.href.split('?')[0]}?join=${gameId}`;
     qs('#lobby-qr').innerHTML = '';
     if (typeof QRCode !== 'undefined') {
       new QRCode(qs('#lobby-qr'), { text: joinUrl, width: 128, height: 128,
         colorDark: '#e8f5e8', colorLight: '#243324' });
     }
+    qs('#lobby-join-url').textContent = joinUrl;
+    qs('#lobby-join-link').classList.remove('hidden');
 
     Net._subscribeToLobby(gameId);
     UI.updateLobbyList();
@@ -876,6 +878,16 @@ const UI = {
     });
   },
 
+  copyJoinLink() {
+    const url = qs('#lobby-join-url').textContent;
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = qs('#lobby-join-link .btn-sm');
+      const orig = btn.textContent;
+      btn.textContent = '✅ Skopiowano!';
+      setTimeout(() => { btn.textContent = orig; }, 1500);
+    });
+  },
+
   updateLobbyList() {
     if (!gs || !gs.players) return;
     const ul = qs('#lobby-ul');
@@ -896,31 +908,6 @@ const UI = {
       jlp.innerHTML = `<p class="hint">${gs.players.length} gracz(y):<br>` +
         gs.players.map(p => escHtml(p.name)).join(', ') + '</p>';
     }
-  },
-
-  // ---------- KONFIGURACJA SUPABASE ----------
-
-  showSupabaseConfig() {
-    qs('#supabase-schema-pre').textContent = SUPABASE_SCHEMA;
-    qs('#inp-supa-url').value = localStorage.getItem('supaUrl') || '';
-    qs('#inp-supa-key').value = localStorage.getItem('supaKey') || '';
-    qs('#modal-supabase').classList.remove('hidden');
-  },
-
-  saveSupabaseConfig() {
-    const url = qs('#inp-supa-url').value.trim();
-    const key = qs('#inp-supa-key').value.trim();
-    if (!url || !key) { alert('Podaj URL i klucz'); return; }
-    localStorage.setItem('supaUrl', url);
-    localStorage.setItem('supaKey', key);
-    supaClient = null;
-    Net.init();
-    UI.closeSupabaseConfig();
-    alert('✅ Konfiguracja zapisana!');
-  },
-
-  closeSupabaseConfig() {
-    qs('#modal-supabase').classList.add('hidden');
   },
 
   // ---------- RENDEROWANIE GRY ----------
