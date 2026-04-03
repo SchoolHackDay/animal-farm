@@ -478,3 +478,49 @@ Utworzono profesjonalne `README.md` z:
 - Inventory grid o 2 kafelki węższy — mniej zawijania na mobile
 
 **Commit:** a790b17
+
+---
+
+### 39. `dodaj .gitignore w którym zignorujesz .DS_Store`
+
+- Dodano `.gitignore` z wpisem `.DS_Store`
+- Usunięto już śledzony plik `.DS_Store` z repozytorium (`git rm --cached`)
+
+**Commit:** b54e873
+
+---
+
+### 40. `Drobny fix gry sieciowej — ?join= zostaje w URL`
+
+- Po odczytaniu parametru `?join=CODE` z URL, natychmiast czyszczony przez `history.replaceState(null, '', location.pathname)`
+- Zapobiega konfliktowi gdy użytkownik wraca do menu i próbuje utworzyć nową grę
+
+**Commit:** fc10ba3
+
+---
+
+### 41. `Usuwamy konfigurację Supabase z UI + link do skopiowania pod QR`
+
+- Usunięto przycisk „⚙️ Konfiguracja Supabase" z ekranu wyboru trybu sieciowego
+- Usunięto cały modal konfiguracji Supabase i powiązane funkcje JS
+- Pod kodem QR w lobby dodano link do gry z przyciskiem 📋 Kopiuj link
+
+**Commit:** cb1faa1
+
+---
+
+### 42. `Ekrany utwórz grę i dołącz do gry — wyśrodkowane`
+
+- Oba ekrany sieciowe używają `.center-box` zamiast `.screen-inner`
+- Wyśrodkowanie w pionie i poziomie, max-width 480px dla formularzy
+
+**Commit:** 5af33b0
+
+---
+
+### 43. `Aktualizacja historia-zmian.md + wymagania niefunkcjonalne`
+
+- Dopisano brakujące wpisy 39–43 w `historia-zmian.md`
+- Do `specyfikacja.md` dodano sekcję „Wymagania niefunkcjonalne — proces vibe-codingu" z wymogiem aktualizacji dziennika po każdej zmianie
+
+**Commit:** → bieżący

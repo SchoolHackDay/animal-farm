@@ -284,3 +284,15 @@ Korzystamy z mechanizmu subskrypcji Supabase do powiadamiania graczy o stanie ro
 * Supabase = state validator i source of truth tylko w trybie sieciowym
 * Realtime = powiadomienia tylko o zmianach tur
 * Możliwość wyświetlenia na komórce
+
+---
+
+# 📋 Wymagania niefunkcjonalne — proces vibe-codingu
+
+Ten projekt jest demonstracją vibe-codingu dla uczniów. **Po każdej zmianie** wprowadzonej przez AI obowiązuje:
+
+1. **Aktualizacja `historia-zmian.md`** — każda komenda użytkownika i jej efekt muszą być odnotowane jako kolejny wpis (numer, treść komendy, opis zmian, hash commitu).
+2. **Commit i push** — każda zmiana trafia do repozytorium z czytelnym opisem.
+3. **Commit trailer** — każdy commit zawiera `Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>`.
+
+`historia-zmian.md` jest **dziennikiem projektu** — ma dokumentować każdy krok, żeby uczniowie mogli śledzić ewolucję kodu.
