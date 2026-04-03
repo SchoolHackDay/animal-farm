@@ -259,17 +259,12 @@ select { appearance: auto; cursor: pointer; }
   flex: 1;
   display: grid;
   grid-template-columns: 220px 1fr;
-  grid-template-rows: auto auto;
-  grid-template-areas:
-    "action players"
-    "pool   players";
   gap: .6rem;
   min-height: 0;
 }
 
 /* ---- Panel akcji ---- */
 .action-panel {
-  grid-area: action;
   display: flex;
   flex-direction: column;
   gap: .75rem;
@@ -350,12 +345,10 @@ select { appearance: auto; cursor: pointer; }
 
 /* ---- Pool ---- */
 .pool-box {
-  grid-area: pool;
   background: var(--surface);
   border-radius: var(--radius);
   padding: .4rem .6rem;
   border: 1px solid var(--border);
-  align-self: start;
 }
 .pool-box .section-title { margin-bottom: .3rem; }
 .section-title {
@@ -391,7 +384,6 @@ select { appearance: auto; cursor: pointer; }
 
 /* ---- Panel graczy ---- */
 .players-panel {
-  grid-area: players;
   display: flex;
   flex-direction: column;
   gap: .5rem;
@@ -611,7 +603,6 @@ select { appearance: auto; cursor: pointer; }
   .game-log { flex: none; max-height: 130px; }
   .players-panel { order: 1; }
   .action-panel  { order: 2; flex-direction: row; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
-  .pool-box      { order: 3; width: 100%; }
   .dice-area { flex-shrink: 0; padding: .25rem; gap: .5rem; }
   .die { width: 60px; height: 60px; font-size: 1.9rem; border-radius: 12px; }
   .dice-labels { min-height: .9rem; gap: .5rem; }
