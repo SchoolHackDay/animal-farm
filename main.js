@@ -982,15 +982,16 @@ const UI = {
 
       const invHtml = TRADEABLE.map(a => {
         const n = p.inventory[a] || 0;
-        if (a === 'smallDog' || a === 'bigDog') {
-          return `<div class="inv-item inv-dog${n > 0 ? ' has' : ' zero'}" title="${NAMES[a]}">
-            <span class="inv-emoji">${EMOJI[a]}</span>
-          </div>`;
-        }
+        if (a === 'smallDog' || a === 'bigDog') return ''; // psy w nagłówku
         return `<div class="inv-item${n > 0 ? ' has' : ' zero'}">
           <span class="inv-emoji">${EMOJI[a]}</span>
           <span class="inv-count">${n}</span>
         </div>`;
+      }).join('');
+
+      const dogHtml = ['smallDog','bigDog'].map(a => {
+        const n = p.inventory[a] || 0;
+        return `<span class="dog-badge${n > 0 ? ' has' : ' zero'}" title="${NAMES[a]}">${EMOJI[a]}</span>`;
       }).join('');
 
       const winHtml = WIN_ANIMALS.map(a => {
@@ -1003,6 +1004,7 @@ const UI = {
           <div class="player-color-dot pc-${p.colorIdx}"></div>
           <span class="player-name">${escHtml(p.name)}</span>
           ${p.isAI ? '<span class="ai-tag">🤖 AI</span>' : ''}
+          ${dogHtml}
           ${isActive ? '<span class="player-tag">◀ gra teraz</span>' : ''}
           ${isWinner ? '<span class="player-tag">🏆 WYGRAŁ!</span>' : ''}
         </div>

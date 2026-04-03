@@ -427,6 +427,9 @@ select { appearance: auto; cursor: pointer; }
 .player-name { font-weight: 700; font-size: .95rem; }
 .player-tag  { font-size: .75rem; color: var(--text-muted); margin-left: auto; }
 .ai-tag      { background: #3a3060; color: #c4a0f0; border-radius: 4px; padding: .1rem .35rem; font-size: .7rem; }
+.dog-badge   { font-size: .85rem; line-height: 1; }
+.dog-badge.has  { filter: none; }
+.dog-badge.zero { opacity: .2; filter: grayscale(1); }
 
 .inventory-grid {
   display: flex;
