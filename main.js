@@ -1165,6 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const params   = new URLSearchParams(location.search);
   const joinCode = params.get('join');
   if (joinCode) {
+    history.replaceState(null, '', location.pathname); // usuń ?join= z URL
     UI.showScreen('screen-network-join');
     qs('#inp-join-code').value = joinCode;
   }
