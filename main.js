@@ -757,6 +757,14 @@ const UI = {
     qs(`#${id}`).classList.add('active');
   },
 
+  confirmQuit() {
+    if (confirm('Zakończyć grę i wrócić do menu?')) {
+      if (supaChannel) supaChannel.unsubscribe();
+      gs = null;
+      UI.showScreen('screen-start');
+    }
+  },
+
   // ---------- EKRAN STARTOWY ----------
 
   showLocalSetup() {
