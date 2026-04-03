@@ -79,17 +79,18 @@
     <button id="btn-create-game" class="btn btn-primary" onclick="Net.createGame()">Utwórz grę</button>
 
     <div id="lobby-panel" class="hidden">
+      <button id="btn-start-network" class="btn btn-primary btn-lg" style="width:100%" onclick="Net.startGame()" disabled>▶ Start gry</button>
       <div class="lobby-code-box">
         <span class="label">Kod gry:</span>
         <span id="lobby-code" class="code-badge">----</span>
         <button class="btn btn-sm btn-outline" onclick="UI.copyCode()">📋</button>
       </div>
-      <div id="lobby-qr"></div>
-      <div id="lobby-join-link" class="lobby-link-row hidden">
-        <span id="lobby-join-url" class="lobby-link-text"></span>
-        <button class="btn btn-sm btn-outline" onclick="UI.copyJoinLink()" title="Kopiuj link">📋 Kopiuj link</button>
+      <div class="lobby-qr-row">
+        <div id="lobby-qr"></div>
+        <div id="lobby-join-link" class="hidden">
+          <button class="btn btn-sm btn-outline" onclick="UI.copyJoinLink()" title="Kopiuj link zaproszenia">📋 Kopiuj link</button>
+        </div>
       </div>
-      <button id="btn-start-network" class="btn btn-primary btn-lg" onclick="Net.startGame()" disabled>▶ Start gry</button>
       <div id="lobby-players-list">
         <h4>Gracze w lobby:</h4>
         <ul id="lobby-ul"></ul>

@@ -616,7 +616,7 @@ const Net = {
       new QRCode(qs('#lobby-qr'), { text: joinUrl, width: 128, height: 128,
         colorDark: '#e8f5e8', colorLight: '#243324' });
     }
-    qs('#lobby-join-url').textContent = joinUrl;
+    qs('#lobby-join-link').dataset.url = joinUrl;
     qs('#lobby-join-link').classList.remove('hidden');
 
     Net._subscribeToLobby(gameId);
@@ -880,7 +880,7 @@ const UI = {
   },
 
   copyJoinLink() {
-    const url = qs('#lobby-join-url').textContent;
+    const url = qs('#lobby-join-link').dataset.url;
     navigator.clipboard.writeText(url).then(() => {
       const btn = qs('#lobby-join-link .btn-sm');
       const orig = btn.textContent;

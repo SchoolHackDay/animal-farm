@@ -198,7 +198,13 @@ select { appearance: auto; cursor: pointer; }
   font-family: monospace;
 }
 .label { color: var(--text-muted); font-size: .85rem; }
-#lobby-qr { margin: .75rem 0; display: flex; justify-content: center; }
+#lobby-qr { display: flex; justify-content: center; }
+.lobby-qr-row {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  justify-content: center;
+}
 .lobby-link-row {
   display: flex;
   align-items: center;

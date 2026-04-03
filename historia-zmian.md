@@ -536,3 +536,13 @@ Utworzono profesjonalne `README.md` z:
 - Naprawiono selektor przycisku w `createGame()` i `showNetworkCreate()` → używa `#btn-create-game`
 
 **Commit:** → bieżący
+
+---
+
+### 45. `lobby: start wyżej, kopiuj link obok QR, bez treści linku`
+
+- Przycisk „▶ Start gry" przeniesiony na sam góry lobby-panel (pod polem imienia)
+- Przycisk „📋 Kopiuj link" umieszczony obok kodu QR w jednym rzędzie
+- Usunięto wyświetlanie treści URL (`lobby-link-text`) — link przechowywany w `data-url`
+
+**Commit:** → bieżący
