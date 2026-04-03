@@ -606,7 +606,9 @@ select { appearance: auto; cursor: pointer; }
   .game-main {
     display: flex;
     flex-direction: column;
+    flex: none;        /* nie rozpychaj — log musi być widoczny */
   }
+  .game-log { flex: none; max-height: 130px; }
   .players-panel { order: 1; }
   .action-panel  { order: 2; flex-direction: row; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
   .pool-box      { order: 3; width: 100%; }
