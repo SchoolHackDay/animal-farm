@@ -610,7 +610,10 @@ select { appearance: auto; cursor: pointer; }
   .players-panel { order: 1; }
   .action-panel  { order: 2; flex-direction: row; flex-wrap: wrap; gap: .5rem; align-items: flex-start; }
   .pool-box      { order: 3; width: 100%; }
-  .dice-area { flex-shrink: 0; }
+  .dice-area { flex-shrink: 0; padding: .25rem; gap: .5rem; }
+  .die { width: 60px; height: 60px; font-size: 1.9rem; border-radius: 12px; }
+  .dice-labels { min-height: .9rem; gap: .5rem; }
+  .dice-labels span { width: 54px; }
   .action-btns { flex-direction: row; flex-wrap: wrap; }
   .trade-layout { flex-direction: column; }
   .trade-arrow { padding-top: 0; align-self: center; transform: rotate(90deg); }
