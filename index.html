@@ -85,14 +85,16 @@
         <span id="lobby-code" class="code-badge">----</span>
         <button class="btn btn-sm btn-outline" onclick="UI.copyCode()">📋</button>
       </div>
-      <div class="lobby-qr-row">
-        <div id="lobby-qr"></div>
-        <div id="lobby-join-link" class="hidden">
-          <button class="btn btn-sm btn-outline" onclick="UI.copyJoinLink()" title="Kopiuj link zaproszenia">📋 Kopiuj link</button>
+      <div class="lobby-qr-card">
+        <div class="lobby-qr-row">
+          <div id="lobby-qr"></div>
+          <div id="lobby-join-link" class="hidden">
+            <button class="btn btn-sm btn-outline" onclick="UI.copyJoinLink()" title="Kopiuj link zaproszenia">📋 Kopiuj link</button>
+          </div>
         </div>
       </div>
       <div id="lobby-players-list">
-        <h4>Gracze w lobby:</h4>
+        <div class="field-label" style="margin-bottom:.4rem">Gracze w lobby:</div>
         <ul id="lobby-ul"></ul>
       </div>
     </div>

@@ -546,3 +546,13 @@ Utworzono profesjonalne `README.md` z:
 - Usunięto wyświetlanie treści URL (`lobby-link-text`) — link przechowywany w `data-url`
 
 **Commit:** → bieżący
+
+---
+
+### 46. `lobby: QR w bąbelku, "Gracze w lobby" styl field-label, wyrównane marginesy`
+
+- QR kod i przycisk "Kopiuj link" owinięte w card-box (niebieski bąbelek)
+- Nagłówek "Gracze w lobby:" używa `field-label` (jak "TWOJE IMIĘ:")
+- `#lobby-panel` używa `gap: .75rem` zamiast rozrzuconych `margin-top`
+
+**Commit:** → bieżący

@@ -181,6 +181,12 @@ select { appearance: auto; cursor: pointer; }
 .type-toggle.ai { background: #3a3060; border-color: #7b5ea7; color: #c4a0f0; }
 
 /* ---------- LOBBY ---------- */
+#lobby-panel {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+  margin-top: .25rem;
+}
 .lobby-code-box {
   display: flex;
   align-items: center;
@@ -188,7 +194,6 @@ select { appearance: auto; cursor: pointer; }
   background: var(--card);
   padding: .75rem 1rem;
   border-radius: 10px;
-  margin-top: .5rem;
 }
 .code-badge {
   font-size: 1.8rem;
@@ -198,6 +203,11 @@ select { appearance: auto; cursor: pointer; }
   font-family: monospace;
 }
 .label { color: var(--text-muted); font-size: .85rem; }
+.lobby-qr-card {
+  background: var(--card);
+  border-radius: 10px;
+  padding: .75rem 1rem;
+}
 #lobby-qr { display: flex; justify-content: center; }
 .lobby-qr-row {
   display: flex;
