@@ -62,8 +62,8 @@ W grze jest skończona liczba zwierząt — jeśli pula jest wyczerpana, nie dos
 
 | Zdarzenie | Efekt | Ochrona |
 |---|---|---|
-| 🦊 **Lis** | Tracisz wszystkie 🐰 króliki | 🐕 Mały pies (zostaje) |
-| 🐺 **Wilk** | Tracisz wszystko oprócz 🐴 konia i 🐕 małego psa | 🦮 Duży pies (zostaje) |
+| 🦊 **Lis** | Tracisz wszystkie 🐰 króliki | 🐕 Mały pies (odgania, ale sam ginie) |
+| 🐺 **Wilk** | Tracisz wszystko oprócz 🐴 konia i 🐕 małego psa | 🦮 Duży pies (odgania, ale sam ginie) |
 
 ### Wymiana
 

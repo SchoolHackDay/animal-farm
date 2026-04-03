@@ -119,12 +119,12 @@ Gracz nie dostaje nic, ale też nie traci nic.
 
 2. **Lis (🦊)**
 
-   * mały pies chroni
+   * mały pies chroni — ale pies zostaje stracony (wraca do puli)
    * brak małego psa → wszystkie króliki giną
 
 3. **Wilk (🐺)**
 
-   * duży pies chroni
+   * duży pies chroni — ale pies zostaje stracony (wraca do puli)
    * brak dużego psa → wszystkie zwierzęta poza małym psem i koniem giną
 
 4. **Wymiana**

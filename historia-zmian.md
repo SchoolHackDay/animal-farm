@@ -392,3 +392,89 @@ Utworzono profesjonalne `README.md` z:
 - Pula mniejsza: padding, font-size, gap zmniejszone
 
 **Commit:** → *fix: mobile layout - pool below players, no zoom, compact pool*
+
+---
+
+### 30. `przerwa po rzucie 200ms -> 400ms -> 500ms`
+
+- Kilkukrotna korekta przerwy po rzucie dla gracza i AI
+- Ostateczna wartość: **500ms** dla wszystkich (gracz i AI)
+
+**Commit:** dae759c, 66afc63
+
+---
+
+### 31. `przycisk wymiany aktywny tylko jeśli możemy coś wymienić`
+
+- Nowa funkcja `canTrade(player)` — sprawdza czy wartość inwentarza gracza ≥ wartość najtańszego dostępnego zwierzęcia w puli
+- Przycisk 🛍️ Wymiana wyszarzony gdy brak możliwej wymiany
+
+**Commit:** f50eacb
+
+---
+
+### 32. `gracz nieaktywny — wyciemniony`
+
+- Nieaktywne karty graczy: `opacity: 0.45`, `filter: saturate(0.3)`
+- Aktywny gracz: pełne kolory + podświetlona ramka
+- Płynne przejście CSS
+
+**Commit:** 56830af
+
+---
+
+### 33. `poprawki mobile — pula kompaktowa, flex-wrap`
+
+- Pool items: grid 2-kolumnowy → `display:flex; flex-wrap:wrap` — więcej niż 2 w linii
+- Każdy kafelek dopasowany szerokością do zawartości (`white-space: nowrap`)
+
+**Commit:** 8a32721
+
+---
+
+### 34. `mobile: 25% mniejsze kości + mniej miejsca pod nimi`
+
+- Kości na mobile: 80px → 60px, font 2.6rem → 1.9rem
+- Mniejszy padding dice-area i dice-labels
+
+**Commit:** 27a6879
+
+---
+
+### 35. `pula nad przebiegiem gry — pełna szerokość`
+
+- Pool-box przeniesiony z game-main do game-layout (po graczy, przed logiem)
+- Desktop: pula na pełną szerokość tak jak log
+- Mobile: kolejność w DOM: gracze → kostki → pula → log (bez order CSS)
+- game-layout: dodano `gap: .6rem`
+
+**Commit:** b40c459, 4266f90
+
+---
+
+### 36. `mobilny log gry przestał być widoczny`
+
+- `game-main` na mobile: `flex: none` — nie rozpycha się na całą wysokość
+- `game-log` na mobile: `max-height: 130px`
+
+**Commit:** 4265ae4
+
+---
+
+### 37. `przycisk zakończenia gry w nagłówku`
+
+- Ikona ⏻ po prawej stronie paska statusu
+- Pyta o potwierdzenie przed wyjściem
+- Odłącza Supabase channel jeśli tryb sieciowy, wraca do ekranu głównego
+
+**Commit:** 86e0076
+
+---
+
+### 38. `psy w linii z imieniem gracza`
+
+- Znaczki 🐕🦮 przeniesione z inventory grid do linii nagłówka (obok imienia i AI badge)
+- Świecą gdy gracz posiada psa, wyszarzone gdy brak
+- Inventory grid o 2 kafelki węższy — mniej zawijania na mobile
+
+**Commit:** a790b17
