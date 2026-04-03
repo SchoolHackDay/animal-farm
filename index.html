@@ -27,7 +27,7 @@
      USTAWIENIA LOKALNEJ GRY
 ============================================================ -->
 <div id="screen-local-setup" class="screen">
-  <div class="screen-inner">
+  <div class="center-box">
     <div class="screen-top">
       <button class="btn btn-back" onclick="UI.showScreen('screen-start')">← Wstecz</button>
       <h2>🏠 Gra Lokalna</h2>
@@ -76,7 +76,7 @@
       <label class="field-label">Twoje imię:</label>
       <input id="inp-create-name" type="text" placeholder="Podaj imię..." maxlength="20" />
     </div>
-    <button class="btn btn-primary" onclick="Net.createGame()">Utwórz grę</button>
+    <button id="btn-create-game" class="btn btn-primary" onclick="Net.createGame()">Utwórz grę</button>
 
     <div id="lobby-panel" class="hidden">
       <div class="lobby-code-box">
@@ -89,12 +89,11 @@
         <span id="lobby-join-url" class="lobby-link-text"></span>
         <button class="btn btn-sm btn-outline" onclick="UI.copyJoinLink()" title="Kopiuj link">📋 Kopiuj link</button>
       </div>
+      <button id="btn-start-network" class="btn btn-primary btn-lg" onclick="Net.startGame()" disabled>▶ Start gry</button>
       <div id="lobby-players-list">
         <h4>Gracze w lobby:</h4>
         <ul id="lobby-ul"></ul>
       </div>
-      <p class="hint" id="lobby-hint">Oczekiwanie na graczy…</p>
-      <button id="btn-start-network" class="btn btn-primary btn-lg" onclick="Net.startGame()" disabled>▶ Start gry</button>
     </div>
   </div>
 </div>

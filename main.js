@@ -574,7 +574,7 @@ const Net = {
   },
 
   async createGame() {
-    const btn = qs('#screen-network-create .btn-primary');
+    const btn = qs('#btn-create-game');
     if (btn && btn.disabled) return;           // guard: podwójne kliknięcie
     if (btn) btn.disabled = true;
 
@@ -606,6 +606,7 @@ const Net = {
 
     qs('#lobby-code').textContent = gameId;
     qs('#lobby-panel').classList.remove('hidden');
+    qs('#btn-create-game').classList.add('hidden');
     qs('#btn-start-network').disabled = true;
 
     // QR code + link
@@ -854,9 +855,9 @@ const UI = {
 
   showNetworkCreate() {
     UI.showScreen('screen-network-create');
-    // Odblokuj przycisk (mógł zostać zablokowany przez poprzednie tworzenie gry)
-    const btn = qs('#screen-network-create .btn-primary');
-    if (btn) btn.disabled = false;
+    // Odblokuj i pokaż przycisk (mógł zostać zablokowany/ukryty przez poprzednie tworzenie gry)
+    const btn = qs('#btn-create-game');
+    if (btn) { btn.disabled = false; btn.classList.remove('hidden'); }
     // Ukryj lobby z poprzedniej sesji
     const lobby = qs('#lobby-panel');
     if (lobby) lobby.classList.add('hidden');
@@ -899,8 +900,6 @@ const UI = {
         ${p.id === gs.creatorId ? '<span style="font-size:.75rem;color:var(--accent)">👑 twórca</span>' : ''}
       </li>
     `).join('');
-    const hint = qs('#lobby-hint');
-    if (hint) hint.textContent = `${gs.players.length} gracz(y) w lobby`;
 
     // Aktualizuj też listę dla dołączającego
     const jlp = qs('#join-lobby-players');

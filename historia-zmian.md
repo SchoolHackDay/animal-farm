@@ -524,3 +524,15 @@ Utworzono profesjonalne `README.md` z:
 - Do `specyfikacja.md` dodano sekcję „Wymagania niefunkcjonalne — proces vibe-codingu" z wymogiem aktualizacji dziennika po każdej zmianie
 
 **Commit:** → bieżący
+
+---
+
+### 44. `bugi UI: logo niewyśrodkowane, ekran lokalny nie centrowany, lobby — ukryj utwórz/pokaż start, usuń licznik graczy`
+
+- `center-box`: dodano `h1` i `.logo` do listy elementów wyśrodkowanych (tekst był left-aligned)
+- Ekran „Gra Lokalna": zmieniono `.screen-inner` → `.center-box` (centrowanie góra/dół)
+- Lobby sieciowe: po kliknięciu „Utwórz grę" przycisk znika, pojawia się „▶ Start gry" nad listą graczy
+- Usunięto napis „X gracz(y) w lobby" (był redundantny)
+- Naprawiono selektor przycisku w `createGame()` i `showNetworkCreate()` → używa `#btn-create-game`
+
+**Commit:** → bieżący

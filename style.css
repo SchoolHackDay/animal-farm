@@ -71,7 +71,7 @@ h4 { font-size: 1rem; font-weight: 600; }
   gap: 1rem;
 }
 .center-box > * { width: 100%; max-width: 480px; text-align: left; }
-.center-box > h2, .center-box > p, .center-box > .screen-top { text-align: center; }
+.center-box > h1, .center-box > h2, .center-box > p, .center-box > .logo, .center-box > .screen-top { text-align: center; }
 
 .screen-inner {
   flex: 1;
