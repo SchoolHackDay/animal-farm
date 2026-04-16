@@ -124,6 +124,9 @@ h4 { font-size: 1rem; font-weight: 600; }
   font-size: .82rem;
   color: var(--text-muted);
 }
+.start-stats-hint:empty {
+  display: none;
+}
 .start-stats.is-loading .start-stats-value,
 .start-stats.is-unavailable .start-stats-value {
   color: var(--text);

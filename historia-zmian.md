@@ -568,3 +568,12 @@ Utworzono profesjonalne `README.md` z:
 - Zaktualizowano `README.md`, `SUPABASE.md` i `specyfikacja.md`
 
 **Commit:** `03b4001` — *feat: add global games counter*
+
+---
+
+### 48. `usuńmy opis "Wspólny licznik wszystkich ukończonych partii"`
+
+- Usunięto stały opis pod wartością licznika na ekranie startowym
+- Komunikaty ładowania i błędów nadal mogą pojawić się w tym miejscu, ale po poprawnym odczycie zostaje tylko etykieta i liczba
+
+**Commit:** → bieżący

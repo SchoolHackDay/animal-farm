@@ -832,7 +832,7 @@ const Stats = {
   _renderValue(count) {
     this._setCardState(
       count.toLocaleString('pl-PL'),
-      'Wspólny licznik wszystkich ukończonych partii',
+      '',
       ''
     );
   },
