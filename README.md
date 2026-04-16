@@ -9,6 +9,8 @@
 
 Nie wymaga instalacji — działa w każdej przeglądarce na komputerze i telefonie.
 
+Na ekranie startowym pod przyciskami widoczny jest też globalny licznik ukończonych partii, pobierany z Supabase.
+
 ---
 
 ## 📋 Jak grać
@@ -92,6 +94,7 @@ Jedna wymiana na turę. Możesz wymieniać wiele→jedno lub jedno→wiele (ale 
 - Tworzysz grę → dostajesz **kod** i **QR code**
 - Inni dołączają przez kod lub skanując QR
 - Stan gry synchronizowany przez **Supabase Realtime**
+- **Globalny licznik rozegranych gier** aktualizuje się po zakończeniu każdej partii
 - Wymaga własnego projektu Supabase → [instrukcja konfiguracji](SUPABASE.md)
 
 ---
@@ -137,7 +140,7 @@ animal-farm/
 ## 🧑‍💻 Tech stack
 
 - **Frontend:** HTML + CSS + Vanilla JavaScript (bez frameworków)
-- **Backend:** brak — tylko [Supabase](https://supabase.com) dla trybu sieciowego
+- **Backend:** brak własnego serwera — tylko [Supabase](https://supabase.com) dla trybu sieciowego i globalnego licznika gier
 - **Realtime:** Supabase Postgres Changes (WebSocket)
 - **QR code:** [qrcodejs](https://github.com/davidshimjs/qrcodejs)
 

@@ -97,6 +97,39 @@ h4 { font-size: 1rem; font-weight: 600; }
 .subtitle { color: var(--text-muted); font-size: 1.05rem; margin-top: -.5rem; }
 .win-trophy { font-size: 5rem; }
 
+.start-stats {
+  max-width: 320px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: .9rem 1rem;
+  text-align: center !important;
+}
+.start-stats-label {
+  font-size: .78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+}
+.start-stats-value {
+  font-size: 2rem;
+  line-height: 1.1;
+  font-weight: 700;
+  color: var(--accent);
+  margin-top: .2rem;
+}
+.start-stats-hint {
+  margin-top: .35rem;
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+.start-stats.is-loading .start-stats-value,
+.start-stats.is-unavailable .start-stats-value {
+  color: var(--text);
+  font-size: 1.3rem;
+}
+
 /* ---------- FORM ---------- */
 .form-group { display: flex; flex-direction: column; gap: .35rem; }
 .field-label { font-size: .9rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; }

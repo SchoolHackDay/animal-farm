@@ -29,11 +29,76 @@ CREATE TABLE IF NOT EXISTS game_sessions (
 
 ALTER TABLE game_sessions ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "allow_all" ON game_sessions
-  FOR ALL USING (true) WITH CHECK (true);
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'game_sessions'
+      AND policyname = 'game_sessions_allow_all'
+  ) THEN
+    CREATE POLICY "game_sessions_allow_all" ON game_sessions
+      FOR ALL USING (true) WITH CHECK (true);
+  END IF;
+END $$;
 
-ALTER PUBLICATION supabase_realtime ADD TABLE game_sessions;
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_publication_tables
+    WHERE pubname = 'supabase_realtime'
+      AND schemaname = 'public'
+      AND tablename = 'game_sessions'
+  ) THEN
+    ALTER PUBLICATION supabase_realtime ADD TABLE game_sessions;
+  END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS app_stats (
+  key TEXT PRIMARY KEY,
+  value BIGINT NOT NULL DEFAULT 0 CHECK (value >= 0),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO app_stats (key, value)
+VALUES ('games_played', 0)
+ON CONFLICT (key) DO NOTHING;
+
+ALTER TABLE app_stats ENABLE ROW LEVEL SECURITY;
+
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_policies
+    WHERE schemaname = 'public'
+      AND tablename = 'app_stats'
+      AND policyname = 'app_stats_allow_all'
+  ) THEN
+    CREATE POLICY "app_stats_allow_all" ON app_stats
+      FOR ALL USING (true) WITH CHECK (true);
+  END IF;
+END $$;
+
+CREATE OR REPLACE FUNCTION increment_games_played()
+RETURNS BIGINT
+LANGUAGE SQL
+AS $$
+  UPDATE app_stats
+  SET value = value + 1,
+      updated_at = NOW()
+  WHERE key = 'games_played'
+  RETURNING value;
+$$;
 ```
+
+To tworzy:
+
+- `game_sessions` — stan aktywnych gier sieciowych
+- `app_stats` — globalny licznik ukończonych partii
+- `increment_games_played()` — atomowe zwiększanie licznika po końcu gry
 
 ---
 
@@ -90,6 +155,8 @@ Każdy ruch → aktualizuje stan w Supabase → pozostali gracze
   otrzymują powiadomienie w czasie rzeczywistym
 ```
 
+Po zakończeniu partii frontend wywołuje `increment_games_played()`, więc licznik na ekranie startowym pokazuje sumę gier rozegranych przez wszystkich użytkowników korzystających z tego samego projektu Supabase.
+
 ---
 
 ## Rozwiązywanie problemów
@@ -98,5 +165,6 @@ Każdy ruch → aktualizuje stan w Supabase → pozostali gracze
 |---|---|
 | „Nie znaleziono gry" | Sprawdź czy kod jest poprawny (wielkość liter nie ma znaczenia) |
 | Błąd tworzenia gry | Sprawdź URL i klucz w `config.js` |
+| Licznik gier pokazuje „—" | Upewnij się, że wykonałeś cały SQL z kroku 2 (`app_stats` + `increment_games_played`) |
 | Gracze nie widzą ruchów | Upewnij się że Realtime jest włączony (krok 2) |
 | Błąd 401 / 403 | Użyj klucza **anon/public**, nie **service_role** |

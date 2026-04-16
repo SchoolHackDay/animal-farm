@@ -556,3 +556,15 @@ Utworzono profesjonalne `README.md` z:
 - `#lobby-panel` używa `gap: .75rem` zamiast rozrzuconych `margin-top`
 
 **Commit:** → bieżący
+
+---
+
+### 47. `Dodajemy wymaganie dotyczące licznika rozegranych gier (przez wszystkich użytkowników). Backend - supabase. Wyświetlanie: ekran startowy pod guzikami. Pamiętaj o zaktualizowaniu dokumetacji, historii i obsłudze git.`
+
+- Na ekranie startowym pod przyciskami dodano kartę z globalnym licznikiem ukończonych partii
+- Frontend pobiera licznik z Supabase (`app_stats.games_played`) i odświeża go przy wejściu do menu
+- Po zakończeniu gry aplikacja wywołuje funkcję `increment_games_played()`, więc licznik rośnie dla wszystkich użytkowników tego samego projektu
+- Rozszerzono schemat Supabase o tabelę `app_stats` i funkcję RPC do atomowego zwiększania licznika
+- Zaktualizowano `README.md`, `SUPABASE.md` i `specyfikacja.md`
+
+**Commit:** → bieżący

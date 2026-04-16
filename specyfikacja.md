@@ -200,6 +200,11 @@ Nie można zamieniać wiele -> wiele!
 
 Stan powinien być aktualizowany po każdej turze (turze każdego gracza).
 
+### Globalny licznik rozegranych gier
+
+Po zakończeniu każdej partii aplikacja zwiększa w Supabase wspólny licznik ukończonych gier.
+Licznik jest wyświetlany na ekranie startowym dla wszystkich użytkowników korzystających z tego samego projektu.
+
 ### Odczyt stanu gry (Realtime / snapshot)
 
 Korzystamy z mechanizmu subskrypcji Supabase do powiadamiania graczy o stanie rozgrywki.
@@ -210,6 +215,7 @@ Korzystamy z mechanizmu subskrypcji Supabase do powiadamiania graczy o stanie ro
 
 * Ekran Startowy
   * wybór trybu gry (lokalny / sieciowy)
+  * pod przyciskami widoczny globalny licznik ukończonych partii pobierany z Supabase
 
 * Ekran Startowy (wybrana gra lokalna)
   * możliwość wpisania imion do 6 graczy
@@ -250,6 +256,7 @@ Korzystamy z mechanizmu subskrypcji Supabase do powiadamiania graczy o stanie ro
 
 * 1–6 graczy w każdym trybie
 * stan gry synchronizowany w trybie sieciowym przez Supabase
+* ekran startowy pokazuje globalny licznik ukończonych partii z Supabase
 * lis, wilk i koń działają poprawnie
 * rozmnażanie i wymiana poprawnie
 * log akcji widoczny dla wszystkich graczy
