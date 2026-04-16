@@ -523,7 +523,7 @@ Utworzono profesjonalne `README.md` z:
 - Dopisano brakujące wpisy 39–43 w `historia-zmian.md`
 - Do `specyfikacja.md` dodano sekcję „Wymagania niefunkcjonalne — proces vibe-codingu" z wymogiem aktualizacji dziennika po każdej zmianie
 
-**Commit:** → bieżący
+**Commit:** `081d4b0` — *ui: remove games counter description*
 
 ---
 
