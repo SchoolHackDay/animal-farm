@@ -838,7 +838,7 @@ const Stats = {
   },
 
   _renderLoading() {
-    this._setCardState('…', 'Ładowanie wspólnego licznika…', 'is-loading');
+    this._setCardState('…', '', 'is-loading');
   },
 
   _renderUnavailable(hintText) {

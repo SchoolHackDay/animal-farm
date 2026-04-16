@@ -577,3 +577,12 @@ Utworzono profesjonalne `README.md` z:
 - Komunikaty ładowania i błędów nadal mogą pojawić się w tym miejscu, ale po poprawnym odczycie zostaje tylko etykieta i liczba
 
 **Commit:** → bieżący
+
+---
+
+### 49. `to też możemy usunąć: Ładowanie wspólnego licznika…`
+
+- Usunięto tekst ładowania pod licznikiem na ekranie startowym
+- W stanie ładowania pozostaje tylko sama wartość `…`, bez dodatkowego opisu
+
+**Commit:** → bieżący
