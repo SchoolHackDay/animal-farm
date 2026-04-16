@@ -535,7 +535,7 @@ Utworzono profesjonalne `README.md` z:
 - Usunięto napis „X gracz(y) w lobby" (był redundantny)
 - Naprawiono selektor przycisku w `createGame()` i `showNetworkCreate()` → używa `#btn-create-game`
 
-**Commit:** → bieżący
+**Commit:** `5a8eed4` — *ui: remove counter loading text*
 
 ---
 
