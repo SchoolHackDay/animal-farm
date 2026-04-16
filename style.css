@@ -53,7 +53,7 @@ h4 { font-size: 1rem; font-weight: 600; }
 /* ---------- EKRANY ---------- */
 .screen {
   display: none;
-  min-height: 100vh;
+  min-height: 100dvh;
   animation: fadeIn .2s ease;
 }
 .screen.active { display: flex; flex-direction: column; }
@@ -248,7 +248,7 @@ select { appearance: auto; cursor: pointer; }
 #screen-game {
   display: none;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 #screen-game.active { display: flex; }
 
