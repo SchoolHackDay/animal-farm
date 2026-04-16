@@ -567,4 +567,4 @@ Utworzono profesjonalne `README.md` z:
 - Rozszerzono schemat Supabase o tabelę `app_stats` i funkcję RPC do atomowego zwiększania licznika
 - Zaktualizowano `README.md`, `SUPABASE.md` i `specyfikacja.md`
 
-**Commit:** → bieżący
+**Commit:** `03b4001` — *feat: add global games counter*
